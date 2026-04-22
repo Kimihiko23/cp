@@ -1,0 +1,14 @@
+# Loại bỏ các file thực thi
+*.exe
+*.o
+*.out
+
+# Loại bỏ các thư mục rác của IDE (VS Code, Visual Studio)
+.vscode/
+.vs/
+bin/
+obj/
+
+# Loại bỏ các file tạm khác
+*.swp
+*.DS_Store

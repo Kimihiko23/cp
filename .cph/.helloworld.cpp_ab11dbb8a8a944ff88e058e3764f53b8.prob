@@ -1,0 +1,1 @@
+{"name":"Local: helloworld","url":"c:\\Users\\mkhoi\\projects\\helloworld\\helloworld.cpp","tests":[{"id":1761830963249,"input":"5 2\n1 2\n3 4\n","output":"4"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\mkhoi\\projects\\helloworld\\helloworld.cpp","group":"local","local":true}

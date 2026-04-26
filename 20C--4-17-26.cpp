@@ -58,7 +58,7 @@ tantei wa mou shindeiru
 @@@@@@@@@@@@@@@@@@@@@@@@%----------------=====:.........  .       .... ........===++++*******############*=*%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@*---------------=====+=........ ...       ...::. .....=++++**+=******#############+:%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@%--------------======+=. .... ..::..        .:::::.   =+******+++**#***######*#####*=#@@@@@@
-
+                                                                               
 */
 #include <bits/stdc++.h>
 #define int long long
@@ -68,51 +68,67 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int N =1e6+23;
 const int MOD = 1000020409;
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>> > pq;
+const int N =1e5+23;
+const int INF = 1e18;
+
+int n, m, d[N], p[N];
 vector<pair<int, int>> g[N];
-int n, m;
-int dist[N];
+
 void dijkstra()
 {
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    for (int i = 1; i <= n; i++) d[i] = INF;
+    d[1] = 0;
     pq.push({0, 1});
-    //w and u
-    while(!pq.empty())
+    while (!pq.empty())
     {
-        
+        int u = pq.top().se;
+        int w = pq.top().fi;
+        pq.pop();
+        if (w > d[u]) continue;
+        for (auto &e : g[u])
+        {
+            int v = e.se;
+            int cost = e.fi;
+            if (d[u] + cost < d[v])
+            {
+                d[v] = d[u] + cost;
+                p[v] = u;
+                pq.push({d[v], v});
+            }
+        }
     }
 }
-void read()
-{   
-    cin >> n >> m;
-    for(int i = 1; i <= m; i++)
-    {
-        int u, v, w;
-        cin >> u >> v >> w;
-        g[u].pb({w, v});
-        g[v].pb({w, u});
-
-    }
-}
-void solve()
-{
-    for(int i = 1; i <= n; i++)
-    {
-        dist[i] = 1e18;
-    }
-    dist[1] = 0;
-}   
 
 siesta()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    read();
-    solve();
-    
-
+    if (fopen("input.txt","r")) 
+    {
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+    }
+    cin >> n >> m;
+    for (int i = 0; i < m; i++)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        g[u].pb({w, v});
+        g[v].pb({w, u});
+    }
+    dijkstra();
+    if (d[n] == INF)
+    {
+        cout << -1;
+    }
+    else
+    {
+        vector<int> res;
+        for (int v = n; v != 0; v = p[v]) res.pb(v);
+        reverse(res.begin(), res.end());
+        for (int i = 0; i < res.size(); i++) cout << res[i] << " ";
+    }
 }

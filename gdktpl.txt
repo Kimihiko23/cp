@@ -1,0 +1,35 @@
+gdktpl
+có cấu trúc bên trong
+có ngành luật -> chê định pháp luật -> vi phạm pháp luật
+
+12 ngành luật:
+hiến pháp
+hình sự
+tố tụng hình sự
+dân sự
+tố tụng dân sự
+hành chính
+tài chính
+kinh tế
+đất đai
+hôn nhân gia đình
+lao động
+quốc tế
+
+câu trúc bên ngoài:
+hiến pháp
+bộ luật
+nghị quyết quốc hội
+
+hình sư : nguy hểm xã hộ
+dân sự : tài sản, dân ...
+kỷ luật : 
+
+
+văn bản vi phạm pháp luật
+văn bản chứa các vi phạm pháp luật đc ban hành theo trình tự thủ tục luật quy định
+
+
+
+
+

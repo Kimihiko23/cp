@@ -1,0 +1,81 @@
+#include <bits/stdc++.h>
+#define int long long
+#define pb push_back
+#define fi first
+#define se second
+using namespace std;
+const int N =1e5+23;
+int n, m;
+vector<int> g[N];
+int dfn[N], low[N];
+stack<int> st;
+bool out[N];
+int dem = 1;
+int ans = 0;
+void dfs(int x)
+{
+    dfn[x] = low[x] = dem;
+    dem++;
+    st.push(x);
+    for(auto v : g[x])
+    {
+        if(!out[v])
+        {
+            if(dfn[v] == 0)
+            {
+                dfs(v);
+                low[x] = min(low[x], low[v]);
+            }
+            else
+            {
+                low[x] = min(low[x], dfn[v]);
+            }
+        }
+    }
+    if(dfn[x] == low[x])
+    {
+        ans++;
+        while(1)
+        {
+            int u = st.top();
+            st.pop();
+            out[u] = 1;
+            if(u == x) break;
+        }
+    }
+}
+void read()
+{
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        g[u].pb(v);
+    }
+
+}
+void solve()
+{
+    for(int i = 1; i <= n; i++)
+    {
+        if(!out[i] && dfn[i] == 0)
+        {
+            dfs(i);
+        }
+    }
+    cout << ans;
+}
+main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
+    read();
+    solve();
+
+   
+    
+}

@@ -1,75 +1,136 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-const int N = 1e3 + 5;
-int n , m;
-int dist[N][N][9];
-int a[N][N];
-int dx[] = {-1 , -1 , -1 , 0 , 0 , 1 , 1 , 1};
-int dy[] = {-1 , 0 , 1 , -1 , 1 , -1 , 0 , 1};
-queue < pair < int , pair < int , int > > > q;
-pair < int , int > start , fin;
-
-bool inside(int x, int y) {
-    return (x >= 1 && x <= n && y >= 1 && y <= m);
-}
-
-void BFS(pair < int , int > start)
-{
-    for(int i = 1 ; i <= n ; i++)
-        for(int j = 1 ; j <= m ; j++)
-            for(int k = 0 ; k <= 7 ; k++)
-                dist[i][j][k] = 1e9;
-
-    dist[start.first][start.second][8] = 0;
-    q.push({8 , start});
-
-    while(!q.empty())
+    #include <bits/stdc++.h>
+    #define int long long
+    #define pb push_back
+    #define fi first
+    #define se second
+    using namespace std;
+    const int N =2000;
+    int a[N][N];
+    int dis[N][N];
+    int n,m;
+    bool check(int x,int y)
     {
-        int u = q.front().second.first;
-        int v = q.front().second.second;
-        int k = q.front().first;
-        q.pop();
-
-        if(u == fin.first && v == fin.second)
+        if (x>=1 && x<=n && y>=1 && y<=m)
+            return true;
+        return false;
+    }
+    void bfs()
+    {
+        queue<pair<int,pair<int,int>>> tt;
+        tt.push({1,{1,0}});
+        dis[1][1]=0;
+        while(!tt.empty())
         {
-            cout << dist[u][v][k];
-            return;
+            auto u=tt.front();
+            tt.pop();
+            if (check(u.fi,u.se.fi+a[u.fi][u.se.fi]) && 
+                dis[u.fi][u.se.fi+a[u.fi][u.se.fi]]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=3)
+            {
+                dis[u.fi][u.se.fi+a[u.fi][u.se.fi]]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi,{u.se.fi+a[u.fi][u.se.fi],3}});
+            }
+            if (check(u.fi,u.se.fi-a[u.fi][u.se.fi]) && 
+                dis[u.fi][u.se.fi-a[u.fi][u.se.fi]]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=7)
+            {
+                dis[u.fi][u.se.fi-a[u.fi][u.se.fi]]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi,{u.se.fi-a[u.fi][u.se.fi],7}});
+            }
+            if (check(u.fi-a[u.fi][u.se.fi],u.se.fi) && 
+                dis[u.fi-a[u.fi][u.se.fi]][u.se.fi]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=1)
+            {
+                dis[u.fi-a[u.fi][u.se.fi]][u.se.fi]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi-a[u.fi][u.se.fi],{u.se.fi,1}});
+            }
+            if (check(u.fi+a[u.fi][u.se.fi],u.se.fi) && 
+                dis[u.fi+a[u.fi][u.se.fi]][u.se.fi]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=5)
+            {
+                dis[u.fi+a[u.fi][u.se.fi]][u.se.fi]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi+a[u.fi][u.se.fi],{u.se.fi,5}});
+            }
+            
+            
+            //cheo
+                //cheo xuong phai
+            if (check(u.fi+a[u.fi][u.se.fi],u.se.fi+a[u.fi][u.se.fi]) && 
+                dis[u.fi+a[u.fi][u.se.fi]][u.se.fi+a[u.fi][u.se.fi]]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=4)
+            {
+                dis[u.fi+a[u.fi][u.se.fi]][u.se.fi+a[u.fi][u.se.fi]]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi+a[u.fi][u.se.fi],{u.se.fi+a[u.fi][u.se.fi],4}});
+            }
+                //cheo len trai
+            if (check(u.fi-a[u.fi][u.se.fi],u.se.fi-a[u.fi][u.se.fi]) && 
+                dis[u.fi-a[u.fi][u.se.fi]][u.se.fi-a[u.fi][u.se.fi]]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=8)
+            {
+                dis[u.fi-a[u.fi][u.se.fi]][u.se.fi-a[u.fi][u.se.fi]]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi-a[u.fi][u.se.fi],{u.se.fi-a[u.fi][u.se.fi],8}});
+            }
+                //cheo len phai
+            if (check(u.fi-a[u.fi][u.se.fi],u.se.fi+a[u.fi][u.se.fi]) && 
+                dis[u.fi-a[u.fi][u.se.fi]][u.se.fi+a[u.fi][u.se.fi]]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=2)
+            {
+                dis[u.fi-a[u.fi][u.se.fi]][u.se.fi+a[u.fi][u.se.fi]]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi-a[u.fi][u.se.fi],{u.se.fi+a[u.fi][u.se.fi],2}});
+            }
+                //cheo xuong trai
+            if (check(u.fi+a[u.fi][u.se.fi],u.se.fi-a[u.fi][u.se.fi]) && 
+                dis[u.fi+a[u.fi][u.se.fi]][u.se.fi-a[u.fi][u.se.fi]]>dis[u.fi][u.se.fi]+1 &&
+                u.se.se!=6)
+            {
+                dis[u.fi+a[u.fi][u.se.fi]][u.se.fi-a[u.fi][u.se.fi]]=dis[u.fi][u.se.fi]+1;
+                tt.push({u.fi+a[u.fi][u.se.fi],{u.se.fi-a[u.fi][u.se.fi],6}});
+            }
+            
+
         }
 
-        for(int new_k = 0 ; new_k <= 7 ; new_k++)
-            if(new_k != k)
-            {
-                int x = u + dx[new_k] * a[u][v];
-                int y = v + dy[new_k] * a[u][v];
-
-                // ✅ added bounds check here
-                if (!inside(x, y)) continue;
-
-                if(dist[x][y][new_k] > dist[u][v][k] + 1)
-                {
-                    dist[x][y][new_k] = dist[u][v][k] + 1;
-                    q.push({new_k , {x , y}});
-                }
-            }
     }
-    cout << "-1";
-}
-
-
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    cin >> m >> n;
-
-    for(int i = 1 ; i <= n ; i++)
-        for(int j = 1 ; j <= m ; j++)
-            cin >> a[i][j];
+    void read()
+    {
+        cin >> n >> m;
+        swap(n,m);
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                cin >> a[i][j];
+                dis[i][j]=1e18;
+            }
+        }
+    }
+    void solve()
+    {
+        bfs();
+        /*for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=m;j++)
+            {
+                cout << dis[i][j] << " ";
+            }
+            cout << "\n";
+        }*/
+        if (dis[n][m]>=1e17)
+        {
+            cout << -1;
+        }
+        else
+        cout << dis[n][m];
+    }
+    main()
+    {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+        cout.tie(0);
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+        read();
+        solve();
     
-    start = {1 , 1};
-    fin = {n , m};
-    
-    BFS(start);
-}
+        
+    }

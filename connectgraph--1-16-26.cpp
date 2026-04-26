@@ -73,15 +73,6 @@ using namespace std;
 const int N = 1e5+23;
 int par[N], sz[N];
 int n,m;
-void joinset(int a, int b)
-{
-    a = par[a];
-    b = par[b];
-    if(a == b) return;
-    if (sz[a] < sz[b]) swap(a,b);
-    par[b] = a;
-    sz[a] += sz[b];
-}
 int findpar(int v)
 {
     if (v == par[v]) return v;
@@ -89,6 +80,16 @@ int findpar(int v)
         return par[v] = findpar(par[v]);
 
 }
+void joinset(int a, int b)
+{
+    a = findpar(a);
+    b = findpar(b);
+    if(a == b) return;
+    if (sz[a] < sz[b]) swap(a,b);
+    par[b] = a;
+    sz[a] += sz[b];
+}
+
 void read()
 {
    cin >> n >> m;
@@ -125,8 +126,8 @@ main()
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
     read();
     solve();
     

@@ -1,50 +1,43 @@
 #include <bits/stdc++.h>
 #define int long long
 #define pb push_back
-#define all(x) x.begin(), x.end()
 #define fi first
 #define se second
 using namespace std;
-const int N=1e6;
-set<int> s;
-map<int,int> mp;
-int a[N];
+const int N =1e5+23;
+pair<int,int> a[N];
 int n;
-
+bool cmp(const std::pair<int, int> &a, const std::pair<int, int> &b) {
+    return a.second < b.second; // ascending order
+}
 void read()
 {
     cin >> n;
     for(int i=1;i<=n;i++)
     {
-        cin >> a[i];
-        s.insert(a[i]);
+        cin >> a[i].first;
+        a[i].se=i;
     }
 }
-
 void solve()
 {
-    int dem=1;
-    for(auto i: s)
-    {
-        mp[i]=dem;
-        dem++;
-    }
+    sort(a+1,a+1+n);
+    sort(a+1,a+1+n,cmp);
     for(int i=1;i<=n;i++)
     {
-        cout << mp[a[i]] << " ";
+        cout << a[i].fi;
     }
-    //cout << "GAY";
 }
-
 main()
 {
-    ios::sync_with_stdio(0);
+    ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    freopen("input.txt","r",stdin);
+    freopen("output.txt","w",stdout);
     read();
     solve();
-    
+
    
+    
 }

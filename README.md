@@ -1,2 +1,2 @@
 # cp
-the .cpp file, algo, proble, any relate to my cp road
+the .cpp file, algo, problem, any relate to my cp road

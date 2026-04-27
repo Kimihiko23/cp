@@ -58,7 +58,7 @@ tantei wa mou shindeiru
 @@@@@@@@@@@@@@@@@@@@@@@@%----------------=====:.........  .       .... ........===++++*******############*=*%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@*---------------=====+=........ ...       ...::. .....=++++**+=******#############+:%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@%--------------======+=. .... ..::..        .:::::.   =+******+++**#***######*#####*=#@@@@@@
-
+                                                                               
 */
 #include <bits/stdc++.h>
 #define int long long
@@ -68,24 +68,63 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int N =1e6+23;
+const int MOD = 1000020409;
+const int N =1e5+23;
+
+string s;
 
 void read()
 {
-
+    cin >> s;
 }
+
 void solve()
 {
+    stack<int> st;
+    for(char c : s)
+    {
+        if(c == 'C') st.push(12);
+        else if(c == 'H') st.push(1);
+        else if(c == 'O') st.push(16);
+        else if(c == '(') st.push(-1);
+        else if(c == ')')
+        {
+            int sum = 0;
+            while(st.top() != -1)
+            {
+                sum += st.top();
+                st.pop();
+            }
+            st.pop();
+            st.push(sum);
+        }
+        else
+        {
+            int k = c - '0';
+            int x = st.top(); st.pop();
+            st.push(x * k);
+        }
+    }
 
+    int res = 0;
+    while(!st.empty())
+    {
+        res += st.top();
+        st.pop();
+    }
+    cout << res;
 }
 
 siesta()
 {
-    ios::sync_with_stdio(0);
+    ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    if (fopen("HOACHAT.INP","r")) 
+    {
+        freopen("HOACHAT.INP","r",stdin);
+        freopen("HOACHAT.OUT","w",stdout);
+    }
     read();
     solve();
 }

@@ -69,14 +69,50 @@ tantei wa mou shindeiru
 #define siesta main
 using namespace std;
 const int MOD = 1000020409;
-const int N =1e5+23;
+const int N =2e5+23;
+int par[N], sz[N];
+vector<pair<int, pair<int,int>>> edges;
+int find(int a)
+{
+    if (par[a] == a) return a;
+    return par[a] = find(par[a]);
+}
+void join(int a, int b)
+{
+    a = find(a);
+    b = find(b);
+    if (a == b) return;
+    if (sz[a] < sz[b]) swap(a,b);
+    par[b] = a;
+    sz[a] += sz[b];
+}
+int n, m;
 void read()
 {
-
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++) par[i] = i, sz[i] = 1;
+    for (int i = 0; i < m; i++)
+    {
+        int a, b, w;
+        cin >> a >> b >> w;
+        edges.pb({w,{a,b}});
+    }
 }
 void solve()
 {
-    
+    // for(int i = 1; i <= n; i++) par[i] = i, sz[i] = 1;
+    sort(edges.begin(), edges.end(), greater<pair<int, pair<int,int>>>());
+    int ans = 0;
+    for(auto e : edges)
+    {
+        int w = e.fi, a = e.se.fi, b = e.se.se;
+        if (find(a) != find(b))
+        {
+            ans += w;
+            join(a,b);
+        }
+    }
+    cout << ans;
 }
 siesta()
 {

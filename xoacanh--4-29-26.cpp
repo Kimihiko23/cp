@@ -70,12 +70,88 @@ tantei wa mou shindeiru
 using namespace std;
 const int MOD = 1000020409;
 const int N =1e5+23;
+vector<pair<int,int>> edg;
+int n,m;
+int par[N];
+int sz[N];
+int q[N];
+bool dd[N];
+vector<int> g[N];
+vector<string> ans;
+int findpar(int v)
+{
+    if (v==par[v])
+    {
+        return v;
+    }
+    else
+    {
+        par[v]=findpar(par[v]);
+    }
+    return par[v];
+}
+void joinset(int a,int b)
+{
+    a=findpar(a);
+    b=findpar(b);
+    if (a!=b)
+    {
+        if (sz[a]<sz[b])
+        {
+            swap(a,b);
+        }
+        sz[a]+=sz[b];
+        par[b]=a;
+    }
+}
 void read()
 {
-
+    cin >> n >> m;
+    for(int i = 1; i <= m; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        edg.pb({u,v});
+        g[u].pb(v);
+        g[v].pb(u);
+    }
 }
 void solve()
 {
+    for(int i=1;i<=n;i++)
+    {
+        par[i]=i;
+        sz[i]=1;
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> q[i];
+    }
+    for(int i = n; i >= 1; i--)
+    {
+        int u = q[i];
+        dd[u] = true;
+        for(int v : g[u])
+        {
+            if (dd[v])
+            {
+                joinset(u,v);
+            }
+        }
+        if (sz[findpar(u)]==(n - i + 1))
+        {
+            ans.pb("YES");
+        }
+        else
+        {
+            ans.pb("NO");
+        }
+    }
+    reverse(ans.begin(),ans.end());
+    for(string s : ans)    
+    {
+        cout << s << "\n";
+    }
     
 }
 siesta()

@@ -89,8 +89,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    freopen(name ".inp", "r", stdin);
-    freopen(name ".out", "w", stdout);
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

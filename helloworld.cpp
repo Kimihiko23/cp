@@ -68,6 +68,7 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
+#define name "input"
 const int MOD = 1000020409;
 const int N =1e5+23;
 void read()
@@ -88,6 +89,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

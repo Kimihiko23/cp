@@ -72,9 +72,9 @@ const int N =2e5+23;
 int h[N];
 int n, m;
 vector<pair<int, int>> g[N];
-int par[N][62];
-int mn[N][62];
-int mx[N][62];
+int par[N][32];
+int mn[N][32];
+int mx[N][32];
 vector<int> k[N];
 int ansmn = 1e18;
 int ansmx = -1e18;
@@ -164,7 +164,7 @@ void solve()
 {
     for(int i = 1; i <= n; i++)
     {
-        for(int j = 0; j <= 60; j++)
+        for(int j = 0; j <= 30; j++)
         {
             mn[i][j] = 1e18;
             mx[i][j] = -1e18;
@@ -194,8 +194,11 @@ siesta()
     cin.tie(0);
     cout.tie(0);
     // cout << "GAY";
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
+    if (fopen("input.txt","r")) 
+    {
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+    }
     read();
     solve();
 } 

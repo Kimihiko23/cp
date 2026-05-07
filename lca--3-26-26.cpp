@@ -68,7 +68,9 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int N =1e5+23;
+#define name "LCA"
+const int MOD = 1000020409;
+const int N =2e5+23;
 int h[N];
 int n;
 vector<int> g[N];
@@ -149,15 +151,24 @@ void solve()
         if(s == '?')
         {
             cin >> v;
-            if(lca(u, v) == preroot)
+            int tam1 = lca(u, v);
+            int tam2 = lca(u, root);
+            int tam3 = lca(v, root);
+            if(h[tam1] > h[tam2] && h[tam1] > h[tam3])
             {
-                cout << root << "\n";
-                preroot = root;
+                cout << tam1;
+            }
+            else
+            if(h[tam2] > h[tam1] && h[tam2] > h[tam3])
+            {
+                cout << tam2;
             }
             else
             {
-                cout << lca(u, v) << "\n";
+                cout << tam3;
             }
+            cout << "\n";
+
         }
         if(s == '!')
         {
@@ -170,8 +181,13 @@ siesta()
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
+    if (fopen("input.txt","r")) 
+    {
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+    }
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

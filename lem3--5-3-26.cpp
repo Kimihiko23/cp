@@ -110,17 +110,18 @@ void solve()
             {
                 on.pb(x);
             }
-            for(auto i : on)
+        }
+        for(auto i : on)
+        {
+            for(auto j : on)
             {
-                for(auto j : on)
+                if(i != j)
                 {
-                    if(i != j)
-                    {
-                        dp[i][mask] = min(dp[i][mask], dp[j][mask ^ (1 << i)] + a[j][i]);
-                    }
+                    dp[i][mask] = min(dp[i][mask], dp[j][mask ^ (1 << i)] + a[j][i]);
                 }
             }
         }
+        
     }
     int ans = 1e18;
     for(int i = 0; i < n; i++)

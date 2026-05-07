@@ -70,35 +70,63 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "input"
 const int MOD = 1000020409;
-const int N =16;
-const int M=1<<N;
+const int N =100;
+int n, k;
+int dp[N][70000];
+//dp[i][j] = den thang thu i, mask j;
+int a[N];
 void read()
 {
-
+    cin >> n >> k;
+    for(int i = 0; i < n; i++)
+    {
+        cin >> a[i];
+    }
+    // cout << n;
 }
-
-int n;
-int a[N+5];
-int dp[M+5][N+5];
-
 void solve()
 {
-    cin>>n;
-    for(int i = 0 ; i < n ; i++) cin>>a[i];
-
-    vector<int> on;
-    for(int mask = 0; mask < (1<<n) ; mask++){
-        on.clear();
-        for(int i = 0; i < n ; i++) if((mask >> i) & 1) on.push_back(i);
-
-        for(int i : on){
-            for(int j : on){
-                if (i == j) continue;
-
-                
-            }
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < (1 << n); j++)
+        {
+            dp[i][j] = 0;
         }
     }
+    for(int i = 0; i < n; i++)
+    {
+        dp[i][(1 << i)] = 1;
+    }
+    for(int mask = 0; mask < (1 << n); mask++)
+    {
+        vector<int> on;
+        // on.clear();
+        for(int x = 0; x < n; x++)
+        {
+            if(mask & (1 << x))
+            {
+                on.pb(x);
+            }
+        }
+        for(auto i : on)
+        {
+            for(auto j : on)
+            {
+                if(i != j && abs(a[i] - a[j]) > k)
+                {
+                    dp[i][mask] += dp[j][mask ^ (1 << i)];
+                    // dp[i][mask] = (dp[i][mask] + dp[j][mask ^ (1 << i)]);
+                }
+            }
+        }
+        
+    }
+    int ans = 0;
+    for(int i = 0; i < n; i++)
+    {
+        ans += dp[i][(1 << n) - 1];
+    }
+    cout << ans;
 }
 siesta()
 {

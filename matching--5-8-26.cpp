@@ -70,7 +70,7 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "input"
 const int MOD = 1e9 + 7;
-const int N =20 + 1;
+const int N =21 + 1;
 const int M = (1 << N) + 23;
 bool dd[N][N];
 int dp[N][M];

@@ -61,7 +61,7 @@ tantei wa mou shindeiru
                                                                                
 */
 #include <bits/stdc++.h>
-#define int long long
+// #define int long long
 #define pb push_back
 #define fi first
 #define ll long long
@@ -69,18 +69,80 @@ tantei wa mou shindeiru
 #define siesta main
 using namespace std;
 #define name "input"
-const int MOD = 1000020409;
-const int N =21 + 2;
+const int MOD = 1e9 + 7;
+const int N =20 + 1;
 const int M = (1 << N) + 23;
 bool dd[N][N];
 int dp[N][M];
+int n;
+vector<int> g[N];
+string np(int mask)
+{
+    string s = "";
+    for(int i = n - 1 ; i >= 0 ; i--)
+        s.push_back(((mask >> i) & 1) + '0');
+    reverse(s.begin(), s.end());
+    return s;
+}
 void read()
 {
-
+    cin >> n;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            cin >> dd[i][j];
+        }
+    }
 }
 void solve()
 {
-    
+    for(int i = 0; i < n; i++)
+    {
+        if(dd[0][i] == 1)
+        {
+            dp[0][1 << i] = 1;
+            // cout << 0 << " " << np((1 << i)) << "\n";
+        }
+    }
+    for(int i = 0; i < (1 << n); i++)
+    {
+        int tam = __builtin_popcount(i);
+        // cout << np(i) << "\n";
+        if(tam > 0)
+            g[tam - 1].pb(i);
+    }
+    for(int i = 1; i < n; i++)
+    {
+        for(auto mask : g[i])
+        {
+            vector<int> on;
+            // cout << i << " " << np(mask) << "\n";
+            for(int x = 0; x < n; x++)
+            {
+                if((mask >> x) & 1)
+                    on.pb(x);
+            }
+            for(auto x : on)
+            {
+                if(dd[i][x] == 1)
+                {
+                    if(i - 1 >= 0)
+                    {
+                        // cout << dp[i][mask] << " " << dp[i - 1][mask ^ (1 << x)] << " ";
+                        dp[i][mask] += dp[i - 1][mask ^ (1 << x)];
+                        dp[i][mask] %= MOD;
+                        // cout << dp[i][mask] << "\n";
+                        // cout << i << " " << np(mask) << " " <<np(mask ^ (1 << x)) << " " << dp[i][mask] << "\n";
+                        // cout << dp[i - 1][mask ^ (1 << x)] << " " << i - 1 << " " << np(mask ^ (1 << x)) << " " << dp[i][mask] << "\n";
+                    }
+                }
+            }
+        }
+        // break;
+        // cout << "\n";
+    }
+    cout << dp[n - 1][(1 << n) - 1];
 }
 siesta()
 {

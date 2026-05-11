@@ -68,19 +68,61 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
+#define name "math1"
 const int MOD = 1000020409;
-const int N =1e5+23;
+const int N =1e4+23;
+pair<int, int> f[(ll)N];
 int f1(int x)
 {
-    int tam = cos(4.5 * x * x) + 5 * sin(x * x * x - 1);
+    int tam = cos(4.5 * x * x) +  5 * sin(x * x * x - 1);
+    return tam;
 }
+int f2(int x)
+{
+    int tam = 7;
+    return tam;
+}
+int f3(int x)
+{
+    int tam = log2(x) + sqrt(x * x + 5);
+    return tam;
+}
+int n;
 void read()
 {
-
+    cin >> n;
 }
 void solve()
 {
+   vector<int> ans;
+   int sum = 0;
+   ll tt = 0;
+   for(int i = -1.5; i <= 100; i += 0.5)
+   {
+        tt++;
+        if(i < 0)
+        {
+            f[tt] = {f1(i), i};
+        }
+        else
+        if(i == 0)
+        {
+            f[tt] = {f2(i), i};
+        }
+        else
+            f[tt] = {f3(i), i};
+        if(f[tt].fi > n)
+        {
+            sum += f[tt].fi;
+            ans.pb(f[tt].fi);
+        }
+   }
+   cout << fixed << setprecision(9) << sum << "\n";
+   sort(ans.begin(), ans.end());
+   for(auto i : ans)
+   {
+        cout << i << " ";
+   }
     
 }
 siesta()

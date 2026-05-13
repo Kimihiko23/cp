@@ -70,14 +70,14 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "input"
 const int MOD = 1000020409;
-const int N =1e5+23;
+const int N = 1e5 + 23;
 void read()
 {
 
 }
 void solve()
 {
-    
+
 }
 siesta()
 {

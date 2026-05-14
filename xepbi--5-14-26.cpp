@@ -89,11 +89,25 @@ void solve()
                 if(mask & (1 << j))
                 {
                     dp[i][mask] += dp[i - 1][mask] + dp[i - 1][mask ^ (1 << j)];
-                    dp[i][mask] %= 1e9;
+                    dp[i][mask] %= MOD;
                 }
             }
         }
     }
+    int x = 0;
+    for(int mask = 0; mask < (1 << 4); mask++)
+        if(__builtin_popcountll(mask) >= k)
+        {
+            x += dp[n][mask];
+            x %= MOD;
+        }
+    int ans = 1;
+    for(int i = 1; i <= m; i++)
+    {
+        ans *= x;
+        ans %= MOD;
+    }
+    cout << ans;
 }
 siesta()
 {

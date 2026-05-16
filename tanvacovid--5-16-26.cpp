@@ -70,15 +70,74 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "input"
 const int MOD = 1000020409;
-const int N = 1e5 + 23;
+const int N = (1 << 10) + 23;
 int t, n, m;
+vector<pair<int, pair<int, int>>> edg;
+
+int st;
+int dis[N];
+int change(string s)
+{
+    int tam = 0;
+    int cnt = 0;
+    for(int i = s.size() - 1; i >= 0; i--)
+    {
+        tam += (s[i] - '0') * (1 << cnt);
+        cnt++;
+    }
+    return tam;
+}
+void dijkstra()
+{
+    priority_queue< pair<int, int>, vector< pair<int, int>>, greater< pair< int, int>> > q;
+    dis[st] = 0;
+    q.push({0, st});
+    while(!q.empty())
+    {
+        int u = q.top().se;
+        int w = q.top().fi;
+        q.pop();
+        if(dis[u] < w)
+            continue;
+        for(auto i : edg)
+        {
+            int v = ((u & (~i.se.fi)) | i.se.se);
+            if(dis[v] > dis[u] + i.fi)
+            {
+                dis[v] = dis[u] + i.fi;
+                q.push({dis[v], v});
+            }
+        }
+    }
+    if(dis[0] != 1e18)
+        cout << dis[0] << "\n";
+    else
+        cout << "-1\n";
+}
+
 void read()
 {
     cin >> n >> m;
+    string s1, s2;
+    int u, v, w;
+    cin >> s1;
+    st = change(s1);
+    edg.clear();
+    for(int i = 1; i <= m; i++)
+    {
+        cin >> w >> s1 >> s2;
+        int u = change(s1);
+        int v = change(s2);
+        edg.push_back({w, {u, v}});
+    }
+    // cout << st;
 }
+
 void solve()
 {
-    
+    for(int mask = 0; mask < (1 << n); mask++)
+        dis[mask] = 1e18;
+    dijkstra();
 }
 siesta()
 {
@@ -92,6 +151,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    read();
-    solve();
+    cin >> t;
+    // t = 1;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

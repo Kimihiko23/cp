@@ -68,60 +68,66 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
+#define name "matthu"
 const int MOD = 1000020409;
 const int N = 1e5 + 23;
 int n, m;
+int st1[400005];
+int st2[N * 4];
+const int minn = -1e18;
 int a[N];
-int st[N * 4];
-int lazy[N * 4];
 void build(int l, int r, int id)
 {
     if(l == r)
     {
-        st[id] = a[l];
+        st1[id] = a[l];
+        st2[id] = a[l];
+        return;
+    }
+    int mid = (l+r)>>1;
+    build(l, mid, (id << 1));
+    build(mid+1, r, (id << 1) | 1);
+    st1[id] = max( st1[id*2], st1[id*2+1]);
+    st2[id] = st2[id * 2] + st2[id * 2 + 1];
+
+}
+void update(int id, int l, int r, int pos, int val) 
+{
+    if (l > pos || r < pos) return;
+    else if (l == r) 
+    {
+        st1[id] = val;
+        st2[id] = val;
+        return;
+    }
+    int mid = (l+r)/2;
+    update (id*2, l, mid, pos, val);
+    update (id*2+1, mid+1, r, pos, val);
+    st1[id] = max(st1[id*2], st1[id*2+1]);
+    st2[id] = st2[id * 2] + st2[id * 2 + 1];
+}
+
+int get (int id, int l, int r, int u, int v) {
+    if (l > v || r < u) return 0;
+    else if (l >= u && r <= v) return st2[id];
+    int mid = (l+r)/2;
+    return (get(id*2, l, mid, u, v) + get(id*2+1, mid+1, r, u, v));
+}
+void walk(int l, int r, int id, int u, int v, int k)
+{
+    if( l > v || r < u || st1[id] < k)
+        return;
+    if( l == r )
+    {
+        st1[id] %= k;
+        st2[id] %= k;
         return;
     }
     int mid = (l + r)/2;
-    build(l, mid, id * 2);
-    build(mid + 1, r, id * 2 + 1);
-    st[id] = st[id * 2] + st[id * 2 + 1];
-}
-int get(int l, int r, int id, int u, int v)
-{
-    if(l > v || r < v)
-        return 0;
-    if(l >= u && r <= v)
-        return st[id];
-    int mid = (l + r) / 2;
-    push(id);
-    return get(l, mid, id * 2, u, v) + get(mid + 1, r, id * 2 + 1, u, v);
-}
-void push(int id)
-{
-    if(lazy[id] == 0)
-        return;
-    int x = lazy[id];
-    lazy[id] = 0;
-    
-    st[id * 2] %= x;
-    lazy[id * 2] = x;
-
-    st[id * 2 + 1] %= x;
-    lazy[id * 2 + 1] = x;
-}
-void update1(int l, int r, int id, int u, int v, int x)
-{
-    if(l > v || r < v)
-        return;
-    if(l >= u && r <= v)
-    {
-        st[id] %= x;
-        lazy[id] = x;
-        return;
-    }
-    push(id);
-    int mid = (l + r) / 2;
+    walk(l, mid, id * 2, u, v, k);
+    walk(mid + 1, r, id * 2 + 1, u, v, k);
+    st1[id] = max(st1[id*2], st1[id*2+1]);
+    st2[id] = st2[id * 2] + st2[id * 2 + 1];
 }
 void read()
 {
@@ -133,8 +139,30 @@ void read()
 }
 void solve()
 {
-    
+    build(1, n, 1);
+    int ty;
+    int x, y, val;
+    for(int i = 1; i <= m; i++)
+    {
+        cin >> ty;
+        if(ty == 1)
+        {
+            cin >> x >> y;
+            cout << get(1, 1, n, x, y) << "\n";
+        }
+        if(ty == 2)
+        {
+            cin >> x >> y >> val;
+            walk(1, n, 1, x, y, val);
+        }
+        if(ty == 3)
+        {
+            cin >> x >> val;
+            update(1, 1, n, x, val);
+        }
+    }
 }
+
 siesta()
 {
     ios::sync_with_stdio(false);

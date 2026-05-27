@@ -73,12 +73,12 @@ const int MOD = 1000020409;
 const int N = 3e5 + 23;
 int n, m;
 int a[N];
-int S1, S2;
+const int S1 = 750, S2 = 550;
 map<int, int> mp;
 int b[N], c[N];
 int cnt[N];
-int b_cnt[N];
-int b_sum[N];
+int b_cnt[600];
+int b_sum[600];
 int di = 0;
 int L = 1, R = 0;
 //di = distint
@@ -93,36 +93,28 @@ bool cmp(Query A, Query B)
     return (A.l / S1) & 1 ? A.r < B.r : A.r > B.r;
 }
 int ans[N];
+inline void add(int idx)
+{
+    int p = b[idx];
+    cnt[p]++;
+    b_cnt[p / S2]++;
+    b_sum[p / S2] += c[p];
+}
+
+inline void remove(int idx)
+{
+    int p = b[idx];
+    cnt[p]--;
+    b_cnt[p / S2]--;
+    b_sum[p / S2] -= c[p];
+}
+
 void MO(int i)
 {
-    while(R < q[i].r)
-    {
-        R++;
-        cnt[b[R]]++;
-        b_cnt[b[R] / S2]++;
-        b_sum[b[R] / S2] += c[b[R]];
-    }
-    while(L > q[i].l)
-    {
-        L--;
-        cnt[b[L]]++;
-        b_cnt[b[L] / S2]++;
-        b_sum[b[L] / S2] += c[b[L]];
-    }
-    while(R > q[i].r)
-    {
-        cnt[b[R]]--;
-        b_cnt[b[R] / S2]--;
-        b_sum[b[R] / S2] -= c[b[R]];
-        R--;
-    }
-    while(L < q[i].l)
-    {
-        cnt[b[L]]--;
-        b_cnt[b[L] / S2]--;
-        b_sum[b[L] / S2] -= c[b[L]];
-        L++;
-    }
+    while(R < q[i].r) add(++R);
+    while(L > q[i].l) add(--L);
+    while(R > q[i].r) remove(R--);
+    while(L < q[i].l) remove(L++);
 }
 void read()
 {
@@ -140,7 +132,6 @@ void read()
 }
 void solve()
 {
-    S1 = sqrt(n);
     sort(q + 1, q + m + 1, cmp);
     for(auto i : mp)
     {
@@ -151,7 +142,6 @@ void solve()
         b[i] = mp[a[i]];
         c[b[i]] = a[i];
     }
-    S2 = sqrt(di);
     for(int i = 1; i <= m; i++)
     {
         MO(i);
@@ -159,6 +149,7 @@ void solve()
         int sum = 0;
         for(int j = 0; j <= di / S2; j++)
         {
+            if (b_cnt[j] == 0) continue;
             if(t >= b_sum[j])
             {
                 t -= b_sum[j];
@@ -166,8 +157,12 @@ void solve()
             }
             else
             {
-                for(int k = j * S2; k <= min(di, j * S2 + S2 - 1); k++)
+                int st = j * S2;
+                if(st == 0) st = 1;
+                int ed = min(di, j * S2 + S2 - 1);
+                for(int k = st; k <= ed; k++)
                 {
+                    if (cnt[k] == 0) continue;
                     if(t >= cnt[k] * c[k])
                     {
                         t -= cnt[k] * c[k];
@@ -199,8 +194,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    freopen(name ".inp", "r", stdin);
-    freopen(name ".out", "w", stdout);
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

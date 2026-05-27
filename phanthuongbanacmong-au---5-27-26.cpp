@@ -70,16 +70,16 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "phanthuong"
 const int N = 3e5 + 23;
-const int BLOCK_MO = 750;
-const int BLOCK_VAL = 550;
+const int S1 = 750; 
+const int S2 = 550;
 
 int n, m;
 int a[N];
-vector<int> vals;
+map<int, int> mp;
 int b[N], c[N];
 int cnt[N];
-int b_cnt[BLOCK_VAL + 5];
-int b_sum[BLOCK_VAL + 5];
+int b_cnt[600];
+int b_sum[600];
 int di = 0;
 int L = 1, R = 0;
 
@@ -91,10 +91,8 @@ Query q[N];
 
 bool cmp(Query A, Query B)
 {
-    int blk_A = A.l / BLOCK_MO;
-    int blk_B = B.l / BLOCK_MO;
-    if (blk_A != blk_B) return blk_A < blk_B;
-    return blk_A & 1 ? A.r < B.r : A.r > B.r;
+    if(A.l / S1 != B.l / S1) return A.l < B.l;
+    return (A.l / S1) & 1 ? A.r < B.r : A.r > B.r;
 }
 
 int ans[N];
@@ -103,18 +101,16 @@ inline void add(int idx)
 {
     int p = b[idx];
     cnt[p]++;
-    int blk = p / BLOCK_VAL;
-    b_cnt[blk]++;
-    b_sum[blk] += c[p];
+    b_cnt[p / S2]++;
+    b_sum[p / S2] += c[p];
 }
 
 inline void remove(int idx)
 {
     int p = b[idx];
     cnt[p]--;
-    int blk = p / BLOCK_VAL;
-    b_cnt[blk]--;
-    b_sum[blk] -= c[p];
+    b_cnt[p / S2]--;
+    b_sum[p / S2] -= c[p];
 }
 
 void MO(int i)
@@ -128,11 +124,10 @@ void MO(int i)
 void read()
 {
     cin >> n >> m;
-    vals.reserve(n);
     for (int i = 1; i <= n; i++)
     {
         cin >> a[i];
-        vals.pb(a[i]);
+        mp[a[i]] = 1;
     }
     for (int i = 1; i <= m; i++)
     {
@@ -143,31 +138,27 @@ void read()
 
 void solve()
 {
-    sort(vals.begin(), vals.end());
-    vals.erase(unique(vals.begin(), vals.end()), vals.end());
-    di = vals.size();
-
-    for(int i = 1; i <= di; i++)
+    for(auto i : mp)
     {
-        c[i] = vals[i - 1];
+        mp[i.fi] = ++di;
     }
     for(int i = 1; i <= n; i++)
     {
-        b[i] = lower_bound(vals.begin(), vals.end(), a[i]) - vals.begin() + 1;
+        b[i] = mp[a[i]];
+        c[b[i]] = a[i];
     }
-
+    
     sort(q + 1, q + m + 1, cmp);
-
+    
     for(int i = 1; i <= m; i++)
     {
         MO(i);
         int t = q[i].t;
         int sum = 0;
-        int max_blk = di / BLOCK_VAL;
-
-        for(int j = 0; j <= max_blk; j++)
+        
+        for(int j = 0; j <= di / S2; j++)
         {
-            if(b_cnt[j] == 0) continue;
+            if (b_cnt[j] == 0) continue;
             if(t >= b_sum[j])
             {
                 t -= b_sum[j];
@@ -175,17 +166,17 @@ void solve()
             }
             else
             {
-                int start_k = j * BLOCK_VAL;
-                int end_k = min(di, start_k + BLOCK_VAL - 1);
-                if (start_k == 0) start_k = 1;
+                int start_k = j * S2;
+                int end_k = min(di, j * S2 + S2 - 1);
 
+                if (start_k == 0) start_k = 1; 
+                
                 for(int k = start_k; k <= end_k; k++)
                 {
-                    if(cnt[k] == 0) continue;
-                    int cost = cnt[k] * c[k];
-                    if(t >= cost)
+                    if (cnt[k] == 0) continue;
+                    if(t >= cnt[k] * c[k])
                     {
-                        t -= cost;
+                        t -= cnt[k] * c[k];
                         sum += cnt[k];
                     }
                     else
@@ -199,7 +190,7 @@ void solve()
         }
         ans[q[i].id] = sum;
     }
-
+    
     for(int i = 1; i <= m; i++)
     {
         cout << ans[i] << "\n";

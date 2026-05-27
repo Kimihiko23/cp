@@ -70,7 +70,7 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "phanthuong"
 const int MOD = 1000020409;
-const int N = 1e6 + 23;
+const int N = 3e5 + 23;
 int n, m;
 int a[N];
 int S1, S2;
@@ -199,8 +199,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
+    freopen(name ".inp", "r", stdin);
+    freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

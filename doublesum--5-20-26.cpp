@@ -92,17 +92,25 @@ void solve()
     int ans = 0;
     for(int i = 1; i <= n; i++)
     {
-        for(int j = i + 1; j <= n; j++)
+        int l = i;
+        int r = i + 1;
+        while(l >= 1 && r <= n)
         {
-            int l = i;
-            int r = j;
-            int dd = -1;
-            while(l <= r)
+            int tam1 = cal(l, i);
+            int tam2 = cal(i + 1, r);
+            if(tam1 == tam2)
             {
-                
+                ans = max(ans, r - l + 1);
+                l--;
+                r++;
             }
+            else if(tam1 > tam2)
+                r++;
+            else
+                l--;
         }
     }
+    cout << ans;
 }
 siesta()
 {
@@ -114,8 +122,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
+    freopen(name ".inp", "r", stdin);
+    freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

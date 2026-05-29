@@ -68,84 +68,153 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
 const int MOD = 1000020409;
-const int N = 1e5 + 23;
+const int N =3e5+23;
+int dp[30][N];
+int mx[30][N];
+int par[N];
+int h[N];
+int sz[N];
+bool dd[N];
 int n, m;
-vector<pair<int, pair<int, int>>> edg;
-vector<pair<int, int>> g[N];
-int par[N], sz[N];
-map<int, int> mp;
-int find(int u)
+vector<pair<int ,int>> g[N];
+vector<pair<int, pair<int, int>>> edg2;
+struct edge
 {
-    if(par[u] == u) return u;
-    return par[u] = find(par[u]);
+    int u, v, w;
+    bool in;
+};
+vector<edge> edg;
+// vector<pair<int, int>> edg2;
+void dfs(int u)
+{
+    dd[u] = true;
+    for(auto i : g[u])
+    {
+        int v = i.se;
+        int w = i.fi;
+        if(!dd[v])
+        {
+            h[v] = h[u] + 1;
+            dp[0][v] = u;
+            mx[0][v] = w;
+            dfs(v);
+        }
+    }
 }
-void join(int u, int v)
+void init()
 {
-    u = find(u);
-    v = find(v);
-    if(u == v) return;
-    if(sz[u] < sz[v]) swap(u, v);
-    par[v] = u;
-    sz[u] += sz[v];
+    for(int i = 1; i <= log2(n); i++)
+    {
+        for(int j = 1; j <= n; j++)
+        {
+            dp[i][j] = dp[i - 1][dp[i - 1][j]];
+            mx[i][j] = max({mx[i - 1][j], mx[i - 1][dp[i - 1][j]], mx[i][j]});
+        }
+    }
+}
+int find(int x)
+{
+    if(par[x] == x) return x;
+    return par[x] = find(par[x]);
+}
+void join(int x, int y)
+{
+    // int xx = x;
+    // int yy = y;
+    x = find(x);
+    y = find(y);
+    if(x == y)
+        return;
+    if(sz[x] > sz[y])
+        swap(x, y);
+    par[x] = y;
+    sz[y] +=sz[x];
+
+}
+int lca(int u, int v)
+{
+    int ans = -1e18;
+    if(h[u] < h[v])
+        swap(u, v);
+    for(int i = log2(n); i >= 0; i--)
+    {
+        if(h[dp[i][u]] >= h[v])
+        {
+            ans = max(ans, mx[i][u]);
+            u = dp[i][u];
+        }
+    }
+    if(u == v)
+        return ans;
+    for(int i = log2(n); i >= 0; i--)
+    {
+        if(dp[i][u] != dp[i][v])
+        {
+            ans = max(ans, mx[i][u]);
+            ans = max(ans, mx[i][v]);
+            u = dp[i][u];
+            v = dp[i][v];
+        }
+    }
+    ans = max(ans, mx[0][u]);
+    ans = max(ans, mx[0][v]);
+    return ans;
+}
+bool cmp(edge a, edge b)
+{
+    return a.w < b.w;
 }
 void read()
 {
     cin >> n >> m;
-    int u, v, w;
     for(int i = 1; i <= m; i++)
     {
+        int u, v, w;
         cin >> u >> v >> w;
-        edg.pb({w, {u, v}});
+        edg.pb({u, v, w, false});
+        edg2.pb({w, {u, v}});
     }
 }
 void solve()
 {
-    int ans = 0;
     for(int i = 1; i <= n; i++)
     {
         par[i] = i;
         sz[i] = 1;
     }
-    sort(edg.begin(), edg.end());
-    int dem1 = 0, dem2 = 0;
-    vector<pair<int, pair<int, int>>> edg2;
-    int oldw = -1;
-    for(int i = 0; i < edg.size(); i++)
+    sort(edg.begin(), edg.end(), cmp);
+    int ans = 0;
+    for(auto &i : edg)
     {
-        int w = edg[i].fi;
-        int u = edg[i].se.fi;
-        int v = edg[i].se.se;
-        if(w != oldw || i == edg.size() - 1)
-        {
-            oldw = w;
-            dem1 = 0;
-            dem2 = 0;
-            for(auto j : edg2)
-            {
-                int u = j.se.fi;
-                int v = j.se.se;
-                if(find(u) != find(v))
-                {
-                    dem1++;
-                }
-            }
-            for(auto j : edg2)
-            {
-                int u = j.se.fi;
-                int v = j.se.se;
-                if(find(u) != find(v))
-                {
-                    dem2++;
-                    join(u, v);
-                }
-            }
-            ans += abs(dem1 - dem2);
-            edg2.clear();
-        }
+        // cout << i.fi << " " << i.se.fi << " " << i.se.se << "\n";
+        int u = i.u;
+        int v = i.v;
         if(find(u) != find(v))
-            edg2.pb({w, {u, v}});
+        {
+            join(u, v);
+            g[u].pb({i.w, v});
+            g[v].pb({i.w, u});
+            // ans += i.w;
+            i.in = true;
+        }
+    }
+    dfs(1);
+    init();
+    for(auto i : edg)
+    {
+        if(!i.in)
+        {
+            int u = i.u;
+            int v = i.v;
+            int w = i.w;
+            int mx = lca(u, v);
+            if(mx == w)
+            {
+                ans++;
+            }
+            // cout << 1 << "\n";
+        }
     }
     cout << ans;
 }
@@ -159,8 +228,6 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
     read();
     solve();
 } 

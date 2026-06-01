@@ -69,15 +69,50 @@ tantei wa mou shindeiru
 #define siesta main
 using namespace std;
 #define name "input"
-const int MOD = 1000020409;
+const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
+string l, r;
+int x;
+int dp[105][905][2];
+int f(string &num, int pos, int sum, int tight)
+{
+    if(pos == 0)
+        return sum == 0;
+    if(sum < 0)
+        return 0;
+    if(dp[pos][sum][tight] != -1)
+        return dp[pos][sum][tight];
+    int limit = 9;
+    if(tight == 1)
+        limit = (num[num.size() - pos] - '0');
+    int ans = 0;
+    for(int i = 0; i <= limit; i++)
+    {
+        ans = (ans + f(num, pos - 1, sum - i, tight & (i == limit))) % MOD;
+    }
+    dp[pos][sum][tight] = ans;
+    return ans;
+
+}
+int g(string &num)
+{
+    int sum = 0;
+    for(auto v: num)
+        sum += v - '0';
+    return (sum == x);
+}
 void read()
 {
-
+    cin >> l >> r >> x;
 }
 void solve()
 {
-    
+    memset(dp , -1 , sizeof(dp));
+    int ans_r = f(r , r.size() , x , 1);
+    memset(dp , -1 , sizeof(dp));
+    int ans_l = f(l , l.size() , x , 1);
+    int ans = ((ans_r - ans_l + g(l)) + MOD) % MOD;
+    cout << ans << "\n";
 }
 siesta()
 {

@@ -69,7 +69,8 @@ tantei wa mou shindeiru
 #define siesta main
 using namespace std;
 #define name "input"
-const int MOD = 1000020409;
+const int MOD1 = 1000020409;
+const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
 void read()
 {

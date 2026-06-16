@@ -75,7 +75,14 @@ const int MOD = 1e9;
 int n, m, k, q;
 int dp[1005][1005];
 bool f[1005][1005];
-
+bool check(int x, int y)
+{
+    if (x >= 1 && x <= m && y >= 1 && y <= n)
+    {
+        return true;
+    }
+    return false;
+}
 void read()
 {
     cin >> n >> m >> k >> q;
@@ -83,46 +90,40 @@ void read()
     {
         int x, y;
         cin >> x >> y;
-        if (x >= 1 && x <= m && y >= 1 && y <= n)
-        {
-            f[x][y] = true;
-        }
+        f[x][y] = true;
+
     }
 }
 
 void solve()
 {
-    if (!f[m][n]) 
-    {
-        dp[m][n] = 1;
-    }
+    dp[m][n] = 1;
 
     int dx[] = {-1, 1, 2, 2};
     int dy[] = {2, 2, -1, 1};
 
-    for (int x = m; x >= 1; x--)
+    int mv = min(m, n);
+    for(int i = m; i >= 1; i--)
     {
-        for (int y = n; y >= 1; y--)
+        int x = n;
+        int y = i;
+        while(check(x, y))
         {
-            if (f[x][y]) 
+            if(!f[x][y] && !(x == m && y == n))
             {
-                continue;
-            }
-            if (x == m && y == n) 
-            {
-                continue;
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx >= 1 && nx <= m && ny >= 1 && ny <= n)
+                for (int j = 0; j < 4; j++)
                 {
-                    dp[x][y] = (dp[x][y] + dp[nx][ny]) % MOD;
+                    int xx = x + dx[j];
+                    int yy = y + dy[j];
+                    if (check(xx, yy) && !f[xx][yy])
+                    {
+                        dp[x][y] += dp[xx][yy];
+                        dp[x][y] %= MOD;
+                    }
                 }
             }
+            x--;
+            y++;
         }
     }
 

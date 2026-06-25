@@ -74,11 +74,11 @@ const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
 void read()
 {
-
+    
 }
 void solve()
 {
-    
+
 }
 siesta()
 {

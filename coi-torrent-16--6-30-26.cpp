@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 3e5 + 23;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 int rand(int l, int r) 
@@ -84,9 +84,11 @@ pair<int, int> edge[N];
 int dp[N];
 int par[N];
 int cut = 0;
+bool dd[N];
 void sol(int u, int p)
 {
     dp[u] = 0;
+    dd[u] = 1;
     vector<int> tam;
     for(auto [v, id] : g[u])
     {
@@ -145,31 +147,51 @@ void solve()
         }
         bb = nx;
     }
+    reverse(ab.begin(), ab.end());
     int l = 0, r = ab.size() - 1;
+    cut = ab[0];
+    int vtgut = 0;
+    while(l <= r)
+    {
+        int mid = (l + r) / 2;
+        cut = ab[mid];
+        memset(dp, 0, sizeof(dp));
+        sol(a, 0);
+        int suma = dp[a];
+        memset(dp, 0, sizeof(dp));
+        sol(b, 0);
+        int sumb = dp[b];
+        if(suma < sumb)
+        {
+            // cout << "gei";
+            l = mid + 1;
+            vtgut = mid;
+        }
+        else
+        {
+            r = mid - 1;
+        }
+    }
+    cut = ab[vtgut];
+    memset(dp, 0, sizeof(dp));
     sol(a, 0);
-    cout << dp[a];
-    // int vtgut = 0;
-    // while(l <= r)
-    // {
-    //     int mid = (l + r) / 2;
-    //     cut = ab[mid];
-    //     memset(dp, 0, sizeof(dp));
-    //     sol(a, 1, 0);
-    //     int suma = dp[a][1];
-    //     memset(dp, 0, sizeof(dp));
-    //     sol(b, 2, 0);
-    //     int sumb = dp[b][2];
-    //     if(suma <= sumb)
-    //     {
-    //         l = mid + 1;
-    //         vtgut = ab[mid];
-    //     }
-    //     else
-    //     {
-    //         r = mid - 1;
-    //     }
-    // }
-    // cout << vtgut;
+    int sum1 = dp[a];
+    memset(dp, 0, sizeof(dp));
+    sol(b, 0);
+    int sum2 = dp[b];
+    int ans1 = max(sum1, sum2);
+    if(vtgut + 1 < ab.size())
+    {
+        cut = ab[vtgut + 1];
+        memset(dp, 0, sizeof(dp));
+        sol(a, 0);
+        sum1 = dp[a];
+        memset(dp, 0, sizeof(dp));
+        sol(b, 0);
+        sum2 = dp[b];
+    }
+    int ans2 = max(sum1, sum2);
+    cout << min(ans1, ans2) << "\n";
 }
 siesta()
 {

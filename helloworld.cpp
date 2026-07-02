@@ -100,6 +100,7 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
+    
     read();
     solve();
 } 

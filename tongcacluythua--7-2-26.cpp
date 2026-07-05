@@ -95,7 +95,7 @@ node add(node a, int val)
     powe[0] = 1;
     powe[1] = (val % MOD + MOD) % MOD;
 
-    // res.lz = a.lz;
+    res.lz = a.lz;
     for(int i = 2; i <= 5; i++)
     {
         powe[i] = powe[i - 1] * val;

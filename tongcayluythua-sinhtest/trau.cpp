@@ -68,31 +68,66 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int N =1e5+23;
+#define name "input"
+const int MOD1 = 1000020409;
+const int MOD = 998244353;
+const int N = 1e5 + 23;
+const int INF = 1e18;
+const int NINF = -1e18;
 
 
-int q;
+int n, q;
+int a[N];
+int power(int a, int b, int mod) 
+{
+    int res = 1;
+    a %= mod;
+    if(a < 0)
+        a += MOD;
+    while (b) {
+        if (b & 1) res = res * a % mod;
+        a = a * a % mod;
+        b >>= 1;
+    }
+    return res;
+}
 void read()
 {
-   cin >> q;
+   cin >> n >> q;
+   for(int i = 1; i <= n; i++)
+   {
+        cin >> a[i];
+   }
+   int ty, l, r, x;
+   while(q--)
+   {
+        cin >> ty >> l >> r >> x;
+        if(ty == 1)
+        {
+            for(int i = l; i <= r; i++)
+            {
+                a[i] += x;
+            }
+        }
+        else
+        {
+            int ans = 0;
+            for(int i = l; i <= r; i++)
+            {
+                ans += power(a[i], x, MOD);
+                ans = (ans % MOD + MOD) % MOD;
+            }
+            cout << ans << "\n";
+        }
+    }
+    // for(int i = 1; i <= n; i++)
+    // {
+    //     cout << a[i] << " ";
+    // }
 }
 void solve()
 {
-   while(q--)
-   {
-        int x;
-        cin >> x;
-        bool dd = 1;
-        for(int i = 2; i <= sqrt(x); i++)
-        {
-            if(x % i == 0)
-            {
-                dd = 0;
-                break;
-            }
-        }
-        cout << dd << "\n";
-   }
+  
 }
 siesta()
 {

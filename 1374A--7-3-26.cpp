@@ -70,175 +70,42 @@ tantei wa mou shindeiru
 using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
-const int MOD = 998244353;
+const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
+const int INF = 1e18;
+const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 int rand(int l, int r) 
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
-struct node 
-{
-    int lz = 0;
-    int pow[6] = {1, 0, 0, 0, 0, 0};
-};
-node emp = {0, {0, 0, 0, 0, 0, 0}};
-int n, q;
-int a[N];
-node st[N * 4];
-int cnk[6][6];
-node add(node a, int val)
-{
-    node res = emp;
-    int powe[6];
-    powe[0] = 1;
-    powe[1] = (val % MOD + MOD) % MOD;
 
-    // res.lz = a.lz;
-    for(int i = 2; i <= 5; i++)
-    {
-        powe[i] = powe[i - 1] * val;
-        powe[i] = (powe[i] % MOD + MOD) % MOD;
-    }
-    res.pow[0] = a.pow[0];
-    for(int k = 1; k <= 5; k++)
-    {
-        res.pow[k] = 0;
-        for (int i = 0; i <= k; i++)
-        {
-            res.pow[k] += (((cnk[k][i] * a.pow[k - i] % MOD) + MOD) % MOD) * powe[i];
-            res.pow[k] = (res.pow[k] % MOD + MOD) % MOD;
-        }
-        res.pow[k] %= MOD;
-    }
-    return res;
+int x, y, n;
 
-}
-node mer(node a, node b)
-{
-    node res;
-    for(int i = 0; i <= 5; i++)
-    {
-        res.pow[i] = a.pow[i] + b.pow[i];
-        res.pow[i] = (res.pow[i] % MOD + MOD) % MOD;
-    }
-    return res;
-}
-void down(int id, int l, int r)
-{
-    if(st[id].lz == 0)
-        return;
-    int x = st[id].lz;
-    st[id * 2] = add(st[id * 2], x);
-    st[id * 2].lz = ((st[id * 2].lz + x) % MOD + MOD) % MOD;
-
-    st[id * 2 + 1] = add(st[id * 2 + 1], x);
-    st[id * 2 + 1].lz = ((st[id * 2 + 1].lz + x) % MOD + MOD) % MOD;
-
-    st[id].lz = 0;
-}
-void build(int id, int l, int r)
-{
-    if(l == r)
-    {
-        st[id].pow[0] = 1;
-        for(int i = 1; i <= 5; i++)
-        {
-            st[id].pow[i] = st[id].pow[i - 1] * a[l];
-            st[id].pow[i] = (st[id].pow[i] % MOD + MOD) % MOD;
-        }
-        return;
-    }
-    int mid = (l + r) / 2;
-
-    build(id * 2, l, mid);
-    build(id * 2 + 1, mid + 1, r);
-    st[id] = mer(st[id * 2], st[id * 2 + 1]);
-}
-void update(int id, int l, int r, int u, int v, int val)
-{
-    if(l > v || r < u)
-    {
-        return;
-    }
-    if(l >= u && r <= v)
-    {
-        st[id] = add(st[id], val);
-        st[id].lz = ((st[id].lz + val) % MOD + MOD) % MOD;
-        return;
-    }
-    down(id, l, r);
-    int mid = (l + r) / 2;
-    update(id * 2, l, mid, u, v, val);
-    update(id * 2 + 1, mid + 1, r, u, v, val);
-    st[id] = mer(st[id * 2], st[id * 2 + 1]);
-}
-node get(int id, int l, int r, int u, int v)
-{
-    if(l > v || r < u)
-    {
-        return emp;
-    }
-    if(l >= u && r <= v)
-    {
-        return st[id];
-    }
-    down(id, l, r);
-    int mid = (l + r) / 2;
-    node le = get(id * 2, l, mid, u, v);
-    node ri = get(id * 2 + 1, mid + 1, r, u, v);
-    return mer(le, ri);
-}
 void read()
 {
-    cin >> n >> q;
-    for(int i = 1; i <= n; i++)
-    {
-        cin >> a[i];
-    }
+    cin >> x >> y >> n;
 }
 
 void solve()
 {
-    for(int i = 0; i <= 5; i++)
-    {
-        cnk[i][0] = 1;
-    }
-    for(int cn = 1; cn <= 5; cn++)
-    {
-        for(int k = 1; k <= cn; k++)
-        {
-            cnk[cn][k] += cnk[cn - 1][k] + cnk[cn - 1][k - 1];
-        }
-    }
-    build(1, 1, n);
-    int ty, l, r, value;
-    while(q--)
-    {
-        cin >> ty >> l >> r >> value;
-        if(ty == 1)
-        {
-            update(1, 1, n, l, r, value);
-        }
-        else
-        {
-            cout << get(1, 1, n, l, r).pow[value] % MOD << "\n";
-        }
-    }
+    int k = (n - y) / x;
+    cout << k * x + y << "\n";
 }
+
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    if (fopen("input.txt","r")) 
+
+    int t;
+    cin >> t;
+
+    while (t--)
     {
-        freopen("input.txt","r",stdin);
-        freopen("output.txt","w",stdout);
+        read();
+        solve();
     }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
-    read();
-    solve();
-} 
+}

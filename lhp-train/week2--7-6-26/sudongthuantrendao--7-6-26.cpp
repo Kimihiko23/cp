@@ -160,11 +160,12 @@ void solve()
             {
                 gut[vv].clear();
             }
-        }
-        for(auto v : nxtto)
-        {
             join(v, u);
         }
+        // for(auto v : nxtto)
+        // {
+        //     join(v, u);
+        // }
     }
     for(auto x : gut[findpar(a[n].se)])
     {

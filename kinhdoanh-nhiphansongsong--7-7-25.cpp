@@ -61,7 +61,7 @@ tantei wa mou shindeiru
                                                                                
 */
 #include <bits/stdc++.h>
-#define int long long
+// #define int long long
 #define pb push_back
 #define fi first
 #define ll long long
@@ -72,8 +72,8 @@ using namespace std;
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
-const int INF = 1e18;
-const int NINF = -1e18;
+// const int INF = 1e18;
+// const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 int rand(int l, int r) 
@@ -87,55 +87,38 @@ int dema[N];
 int L[N], R[N], ans[N];
 int in[N], out[N];
 int cnt = 0;
-int st[N * 4][2];
-int lz[N * 4][2];
+
 int h[N];
+vector<int> check[N];
 struct query
 {
     int f, x, d;
 };
 query qe[N];
-void down(int id, int l, int r, int mid, int ty)
+int bit[N][2];
+
+
+void add(int idx, int val, int ty)
 {
-    if(lz[id][ty] == 0)
-        return;
-    int x = lz[id][ty];
-    st[id * 2][ty] += (mid - l + 1) * x;
-    st[id * 2 + 1][ty] += (r - l) * x;
-    lz[id * 2][ty] += x;
-    lz[id * 2 + 1][ty] += x;
-    
-    lz[id][ty] = 0;
+    for (; idx <= n; idx += idx & -idx)
+        bit[idx][ty] += val;
 }
-void update(int id, int l, int r, int u, int v, int val, int ty)
+
+
+void update_range(int l, int r, int val, int ty)
 {
-    if(l > v || r < u)
-        return;
-    if(l >= u && r <= v)
-    {
-        st[id][ty] += (r - l + 1) * val;
-        lz[id][ty] += val;
-        return;
-    }
-    int mid = (l + r) / 2;
-    down(id, l, r, mid, ty);
-    update(id * 2, l, mid, u, v, val, ty);
-    update(id * 2 + 1, mid + 1, r, u, v, val, ty);
-    st[id][ty] = st[id * 2][ty] + st[id * 2 + 1][ty];
+    if (l > r) return;
+    add(l, val, ty);
+    add(r + 1, -val, ty);
 }
-int get(int id, int l, int r, int u, int v, int ty)
+
+
+int get_point(int idx, int ty)
 {
-    if(l > v || r < u)
-        return 0;
-    if(l >= u && r <= v)
-    {
-        return st[id][ty];
-    }
-    int mid = (l + r) / 2;
-    down(id, l, r, mid, ty);
-    int l = get(id * 2, l, mid, u, v, ty);
-    int r = get(id * 2 + 1, mid + 1, r, u, v, ty);
-    return l + r;
+    int sum = 0;
+    for (; idx > 0; idx -= idx & -idx)
+        sum += bit[idx][ty];
+    return sum;
 }
 void dfs(int u, int p)
 {
@@ -153,6 +136,7 @@ void read()
 {
     cin >> n >> m;
     int x;
+    // cout << n << " " << m << "\n";
     for(int i = 2 ; i <= n; i++)
     {
         cin >> x;
@@ -182,20 +166,56 @@ void read()
 }
 void solve()
 {
+    dfs(1, 0);
     while(1)
     {
         bool stop = true;
-        vector<int> check[N];
-    
+        memset(bit, 0, sizeof(bit));
         for(int i = 1; i <= m; i++)
         {
             if(L[i] > R[i])
                 continue;
             stop = false;
-            int tam = L[i] + R[i] / 2;
+            int tam = (L[i] + R[i]) / 2;
             check[tam].pb(i);
         }
-        
+        if(stop)
+            break;
+        for(int i = 0; i <= q; i++)
+        {
+            if(i > 0)
+            {
+                int u = qe[i].f;
+                int x = qe[i].x;
+                int d = qe[i].d;
+                update_range(in[u], out[u], x - h[u] * d, 0);
+                update_range(in[u], out[u], d, 1);
+            }
+            for(auto id : check[i])
+            {
+                int who = id;
+                int need = dema[who];
+                int have = 0;
+                for(auto u : ow[who])
+                {
+                    have += get_point(in[u], 0) + h[u] * get_point(in[u], 1);
+                }
+                if(have >= need)
+                {
+                    ans[who] = i;
+                    R[who] = i - 1;
+                }
+                else
+                {
+                    L[who] = i + 1;
+                }
+            }
+            check[i].clear();
+        }
+    }
+    for(int i = 1; i <= m; i++)
+    {
+        cout << ans[i] << "\n";
     }
 }
 siesta()

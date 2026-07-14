@@ -82,7 +82,7 @@ int rand(int l, int r)
 }
 void read()
 {
-    
+
 }
 void solve()
 {

@@ -90,11 +90,13 @@ int a[N];
 node st[N * 4];
 node merge(node &a, node &b)
 {
-    node res;
+    node res{};
     for(int i = 0; i < mxb; i++)
     {
-        res.bit[i] += a.bit[i] + b.bit[i];
+        res.bit[i] = a.bit[i] + b.bit[i];
+        // res.lz[i] = max(a.lz[i], b.lz[i]);
     }
+    return res;
 }
 void build(int id, int l, int r)
 {
@@ -111,14 +113,89 @@ void build(int id, int l, int r)
     int mid = (l + r) / 2;
     build(id * 2, l, mid);
     build(id * 2 + 1, mid + 1, r);
+    st[id] = merge(st[id * 2], st[id * 2 + 1]);
+}
+void down(int id, int l, int r, int mid)
+{
+    for(int i = 0; i < mxb; i++)
+    {
+        if(st[id].lz[i])
+        {
+            st[id * 2].bit[i] = (mid - l + 1) - st[id * 2].bit[i];
+            st[id * 2 + 1].bit[i] = (r - mid) - st[id * 2 + 1].bit[i];
+            st[id * 2].lz[i] ^= 1;
+            st[id * 2 + 1].lz[i] ^= 1;
+            st[id].lz[i] = 0;
+        }
+    }
+}
+void update(int id, int l, int r, int u, int v, int val)
+{
+    if(l > v || r < u)
+        return;
+    if(l >= u && r <= v)
+    {
+        for(int i = 0; i < mxb; i++)
+        {
+            if(val & (1 << i))
+            {
+                st[id].bit[i] = (r - l + 1) - st[id].bit[i];
+                st[id].lz[i] ^= 1;
+            }
+        }
+        return;
+    }
+    int mid = (l + r) / 2;
+    down(id, l, r, mid);
+    update(id * 2, l, mid, u, v, val);
+    update(id * 2 + 1, mid + 1, r, u, v, val);
+    st[id] = merge(st[id * 2], st[id * 2 + 1]);
+}
+int get(int id, int l, int r, int u, int v)
+{
+    if(l > v || r < u)
+        return 0;
+    if(l >= u && r <= v)
+    {
+        int res = 0;
+        for(int i = 0; i < mxb; i++)
+        {
+            res += (st[id].bit[i] * (1 << i));
+        }
+        return res;
+    }
+    int mid = (l + r) / 2;
+    down(id, l, r, mid);
+    return get(id * 2, l, mid, u, v) + get(id * 2 + 1, mid + 1, r, u, v);
 }
 void read()
 {
-    
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+        cin >> a[i];
+    cin >> q;
 }
 void solve()
 {
-
+    build(1, 1, n);
+    // cout << get(1, 1, n, 1, n);
+    while(q--)
+    {
+        int type;
+        cin >> type;
+        if(type == 1)
+        {
+            int l, r;
+            cin >> l >> r;
+            cout << get(1, 1, n, l, r) << "\n";
+        }
+        else
+        {
+            int l, r, val;
+            cin >> l >> r >> val;
+            update(1, 1, n, l, r, val);
+        }
+    }
 }
 siesta()
 {

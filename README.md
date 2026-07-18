@@ -6,12 +6,13 @@ the .cpp file, algo, problem, any relate to my cp road
 
 | Source | Problems | Solved | Priority |
 |:------:|---------:|--------:|:--------:|
-| ZRT Training | 924 | 406 | 🔥 Highest |
-| Codeforces | - | - | 🔥 High |
-| AtCoder | - | - | ⭐ High |
-| CSES | - | - | ⭐ Medium |
-| VNOI / LQDOJ | - | - | ⭐ Medium |
-| USACO | - | - | 📌 Low |
+| ZRT Training | 924 | 406 |  Highest |
+| Codeforces | - | - |  High |
+| AtCoder | - | - |  Low |
+| CSES | - | - |  Medium |
+| VNOI / LQDOJ | - | - |  Medium |
+| USACO | - | - |  Medium |
+| Miki week3 | 4 | 3 | Low |
 
 > Last updated: July 2026
 

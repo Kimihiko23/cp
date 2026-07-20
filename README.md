@@ -13,6 +13,7 @@ the .cpp file, algo, problem, any relate to my cp road
 | VNOI / LQDOJ | - | - |  Medium |
 | USACO | - | - |  Medium |
 | Miki week3 | 4 | 3 | Low |
+| LHP train week5 | 1 | 6 | Medium |
 
 > Last updated: July 2026
 

@@ -83,18 +83,38 @@ int rand(int l, int r)
 int n, k;
 int a[N];
 vector<vector<int>> dp;
+int pre[N];
+vector<vector<int>> premx;
 void read()
 {
     cin >> n >> k;
+    dp.resize(n + 2, vector<int>(k + 2));
+    premx.resize(n + 2, vector<int>(k + 2));
+    premx[0][0] = -1e18;
     for(int i = 1; i <= n; i++)
     {
+        dp[i][0] = 0;
         cin >> a[i];
+        pre[i] = pre[i - 1] + a[i];
+        premx[0][i] = max(premx[0][i - 1], -pre[i]);
+        premx[i][0] = -1e18;
+        // cout << -pre[i] << " " << pre[i] << "\n";
     }
-    dp.resize(n + 2, vector<int>(k + 2));
+    // cout << "\n";
+    
 }
 void solve()
-{
-
+{   
+     for(int i = 1; i <= n; i++)
+     {
+        for(int j = 1; j <= k; j++)
+        {
+            dp[i][j] = premx[j - 1][i - 1] + pre[i];
+            premx[j][i] = max(premx[j][i - 1], dp[i][j] - pre[i]);
+        }
+        // cout << premx[i] << "\n";
+     }
+     cout << dp[n][k];
 }
 siesta()
 {

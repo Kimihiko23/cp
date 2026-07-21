@@ -6,14 +6,17 @@ the .cpp file, algo, problem, any relate to my cp road
 
 | Source | Problems | Solved | Priority |
 |:------:|---------:|--------:|:--------:|
-| ZRT Training | 924 | 406 |  Highest |
+| ZRT Training | 924 | 407 |  Highest |
 | Codeforces | - | - |  High |
-| AtCoder | - | - |  Low |
 | CSES | - | - |  Medium |
-| VNOI / LQDOJ | - | - |  Medium |
 | USACO | - | - |  Medium |
 | Miki week3 | 4 | 3 | Low |
+| Greedy TPB | 15 | 14 | Medium |
 | LHP train week5 | 1 | 6 | Medium |
+| none | - | - | - |
+| none | - | - | - |
+| none | - | - | - |
+| none | - | - | - |
 
 > Last updated: July 2026
 
@@ -39,6 +42,7 @@ the .cpp file, algo, problem, any relate to my cp road
 - Advanced Trees
 - String Algorithms
 - Math
+- Greedy
 
 ## 📈 Goal
 

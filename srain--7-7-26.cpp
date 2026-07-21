@@ -197,10 +197,10 @@ int get(int id, int l, int r, int u, int v)
 {
     if(l > v || r < u)
         return 0;
-    if(l == r)
-    {
-        return min(b[l], st[id]);
-    }
+    // if(l == r)
+    // {
+    //     return min(b[l], st[id]);
+    // }
     if(l >= u && r <= v)
     {
         auto check = getmxmn(1, 1, n, l, r);

@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 1e6 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -88,16 +88,17 @@ vector<vector<int>> premx;
 void read()
 {
     cin >> n >> k;
-    dp.resize(n + 2, vector<int>(k + 2));
-    premx.resize(n + 2, vector<int>(k + 2));
-    premx[0][0] = -1e18;
+    dp.assign(n + 2, vector<int>(k + 2, NINF));      // mặc định NINF, không phải 0
+    premx.assign(k + 2, vector<int>(n + 2, NINF));
+    dp[0][0] = 0;
+    premx[0][0] = -pre[0];
     for(int i = 1; i <= n; i++)
     {
         dp[i][0] = 0;
         cin >> a[i];
         pre[i] = pre[i - 1] + a[i];
         premx[0][i] = max(premx[0][i - 1], -pre[i]);
-        premx[i][0] = -1e18;
+        // premx[i][0] = 0;
         // cout << -pre[i] << " " << pre[i] << "\n";
     }
     // cout << "\n";
@@ -105,16 +106,17 @@ void read()
 }
 void solve()
 {   
-     for(int i = 1; i <= n; i++)
-     {
+    int ans = NINF;
+    for(int i = 1; i <= n; i++)
+    {
         for(int j = 1; j <= k; j++)
         {
-            dp[i][j] = premx[j - 1][i - 1] + pre[i];
+            dp[i][j] = max(dp[i - 1][j], premx[j - 1][i - 1] + pre[i]);
             premx[j][i] = max(premx[j][i - 1], dp[i][j] - pre[i]);
         }
-        // cout << premx[i] << "\n";
-     }
-     cout << dp[n][k];
+        // ans = max(ans, dp[i][k]);
+    }
+    cout << dp[n][k];
 }
 siesta()
 {

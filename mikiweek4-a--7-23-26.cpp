@@ -98,7 +98,7 @@ int binpow(int x, int pw)
 }
 int n;
 void read()
-{
+{ 
     // cout << binpow(1, 2);
     fac[0] = 1;
     cin >> n;

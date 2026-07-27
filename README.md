@@ -14,9 +14,9 @@ the .cpp file, algo, problem, any relate to my cp road
 | Greedy TPB | 15 | 14 | Medium |
 | LHP train week5 | 1 | 6 | Medium |
 | Miki | 5 | 2 | Medium |
-| T.Hungweek3 | 2 | - | Low |
-| none | - | - | - |
-| none | - | - | - |
+| T.Hungweek3 | 2 | 0 | Low |
+| tpbweek5 | 5 | 0 | Low |
+| topictrainingweek4-tree | 5 | 0 | Medium |
 
 > Last updated: July 2026
 

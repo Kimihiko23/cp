@@ -80,24 +80,113 @@ int rand(int l, int r)
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
+int l = -2e9;
+int r = 2e9;
+int rema = 40;
 void read()
 {
-
+    while(r > l)
+    {
+        if((r - l + 1) <= 5)
+        {
+            break;
+        }
+        int mid = l + (r - l) / 2;
+        cout << "? " << l << " " << mid << endl;
+        rema--;
+        int ans = 0;
+        cin >> ans;
+        if(ans == 1)
+        {
+            r = mid;
+            r = min(r + 1, (int)2e9);
+            l = max(l - 1, (int)-2e9);
+        }
+        else
+        {
+            l = mid + 1;
+        }
+    }   
 }
 void solve()
 {
-
+    // int vt = l;
+    int cond1 = l, cond2 = r;
+    for(int i = l + 1; i <= r - 1; i++)
+    {
+        cout << "? " << i << " " << i << endl;
+        rema--;
+        int x;
+        cin >> x;
+        if(x == 1)
+        {
+            cond1 = i - 1;
+            cond2 = i + 1;
+            break;
+        }
+    }
+    
+        auto hina = [&](auto &&self, int pos1, int pos2) -> void
+        {
+            int choice =  rand(1, 2);
+            if(rema == 0)
+            {
+                if(choice == 1)
+                {
+                    cout << "! " << pos1 << endl;
+                }
+                else
+                {
+                    cout << "! " << pos2 << endl;
+                }
+                // cout << "? " << pos1 << " " << pos1 << endl;
+            }
+            if(choice == 1)
+            {
+                rema--;
+                cout << "? " << pos1 << " " << pos1 << endl;
+                int x;
+                cin >> x;
+                if(x == 1)
+                {
+                    self(self, pos1 - 1, pos1 + 1);
+                }
+                else
+                {
+                    cout << "! " << pos2 << endl;
+                }
+            }
+            else
+            {
+                rema--;
+                cout << "? " << pos2 << " " << pos2 << endl;
+                int x;
+                cin >> x;
+                if(x == 1)
+                {
+                    self(self, pos2 - 1, pos2 + 1);
+                }
+                else
+                {
+                    cout << "! " << pos1 << endl;
+                }
+            }
+            
+        };
+        hina(hina, cond1, cond2);
+        
+    
 }
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    if (fopen("input.txt","r")) 
-    {
-        freopen("input.txt","r",stdin);
-        freopen("output.txt","w",stdout);
-    }
+    // if (fopen("input.txt","r")) 
+    // {
+    //     freopen("input.txt","r",stdin);
+    //     freopen("output.txt","w",stdout);
+    // }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
     

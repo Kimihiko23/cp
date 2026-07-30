@@ -11,8 +11,9 @@ the .cpp file, algo, problem, any relate to my cp road
 | CSES | - | - |  Medium |
 | USACO | - | - |  Medium |
 | Miki week1 | 4 | 0 | Low |
+| Miki week2 | 5 | 4 | Low |
 | Miki week3 | 4 | 3 | Low |
-| Miki week5 | 7 | 0 | Low |
+| Miki week5 | 7 | 1 | Low |
 | Greedy TPB | 15 | 14 | Medium |
 | LHP train week5 | 1 | 6 | Medium |
 | Miki | 5 | 2 | Medium |

@@ -86,7 +86,7 @@ void read()
 }
 void solve()
 {
-
+    
 }
 siesta()
 {

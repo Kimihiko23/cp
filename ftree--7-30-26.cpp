@@ -90,8 +90,17 @@ vector<edge> edgrm;
 vector<pair<int, int>> g[N], g2[N];
 int f[N];
 bool dd[N];
-vector<int> famous;
+vector<int> arya;
 int dep[N];
+int dis[N];
+int dis2[N];
+int dismx[N];
+int dis3[N];
+pair<int, int> afdis[N];
+int ans[N]; 
+vector<int> hina;
+bool vis[N];
+int sumw = 0;
 void dfs(int u, int p)
 {
     for(auto i : g[u])
@@ -102,6 +111,83 @@ void dfs(int u, int p)
         dep[v] = dep[u] + 1;
         dfs(v, u);
         f[u] += f[v];
+    }
+}
+void dfs2(int u, int p)
+{
+    for(auto i : g2[u])
+    {
+        int v = i.fi;
+        int w = i.se;
+        if(v == p)
+            continue;
+        dis[v] = dis[u] + w;
+        dfs2(v, u);
+        dismx[u] = max(dismx[v] + w, dismx[u]);
+    }
+}
+void dfs3(int u, int p)
+{
+    int mx1 = -1, mx2 = -1;
+    for(auto i : g2[u])
+    {
+        int v = i.fi;
+        int w = i.se;
+        int val = dismx[v] + w;
+        if(v == p)
+            continue;
+        if(val > mx1)
+        {
+            mx2 = mx1;
+            mx1 = val;
+        }
+        else if(val > mx2)
+        {
+            mx2 = val;
+        }
+    }
+    // dis2[u] = mx1;
+    for(auto i : g2[u])
+    {
+        int v = i.fi;
+        int w = i.se;
+        if(v == p)
+            continue;
+        int use = (dismx[v] + w == mx1 ? mx2 : mx1);
+        dis2[v] = w + max(dis2[u], max(0LL, use));
+        dis3[v] = max(dis2[v], dismx[v]);
+        dfs3(v, u);
+    }
+}
+void bfs()
+{
+    queue<int> q;
+    for(auto i : hina)
+    {
+        q.push(i);
+        dd[i] = 1;
+        afdis[i].fi = i;
+        afdis[i].se = 0;
+        // ans[i] = sumw * 2 - dis2[i];
+    }
+    while(!q.empty())
+    {
+        int u = q.front();
+        int old = afdis[u].fi;
+        ans[u] = sumw * 2 - dis3[old] + afdis[u].se;
+        q.pop();
+        for(auto i : g[u])
+        {
+            int v = i.fi;
+            int w = i.se;
+            if(!dd[v])
+            {
+                dd[v] = 1;
+                afdis[v].se = afdis[u].se + w;
+                afdis[v].fi = old;
+                q.push(v);
+            }
+        }
     }
 }
 void read()
@@ -119,7 +205,8 @@ void read()
     {
         cin >> u;
         dd[u] = 1;
-        famous.pb(u);
+        arya.pb(u);
+        hina.pb(u);
         f[u] = 1;
     }
 }
@@ -137,10 +224,26 @@ void solve()
         g2[u].pb({v, i.w});
         g2[v].pb({u, i.w});
         edgrm.pb({u, v, i.w});
+        sumw += i.w;
+        hina.pb(u);
+        hina.pb(v);
     }
-    for(auto i : edgrm)
+    sort(hina.begin(), hina.end());
+    hina.erase(unique(hina.begin(), hina.end()), hina.end());
+    dfs2(arya[0], 0);
+    dfs3(arya[0], 0);
+    dis2[arya[0]] = dismx[arya[0]];
+    dis3[arya[0]] = dismx[arya[0]];
+    bfs();
+    // for(auto i : hina)
+    // {
+    //     cout << i << " " << dis3[i] << "\n";
+    // }
+    // cout << "\n";
+    // cout << "==============================\n";
+    for(int i = 1; i <= n; i++)
     {
-        cout << i.u << " " << i.v << "\n";
+        cout << ans[i] << "\n";
     }
 }
 siesta()

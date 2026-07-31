@@ -6,7 +6,7 @@ the .cpp file, algo, problem, any relate to my cp road
 
 | Source | Problems | Solved | Priority |
 |:------:|---------:|--------:|:--------:|
-| ZRT Training | 924 | 408 |  Highest |
+| ZRT Training | 924 | 410 |  Highest |
 | Codeforces | - | - |  High |
 | CSES | - | - |  Medium |
 | USACO | - | - |  Medium |

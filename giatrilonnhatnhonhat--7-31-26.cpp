@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -99,6 +99,12 @@ int check(int x)
             cnt++;
             sz = 1;
         }
+        else
+        {
+            sum += a[i];
+            // cnt++;
+            sz++;
+        }
         if(sz == 1 && sum > x)
             return 1e18;
     }
@@ -115,20 +121,21 @@ void read()
 }
 void solve()
 {
-    int ans = -1;
-    int l = 1, r = mx;
-    cout << check(10) << "\n";
+    int ans = 1e18;
+    int l = 1, r = 1e18;
+    // cout << check(150) << "\n";
     while(l <= r)
     {
         int mid = (l + r) / 2;
         int tam = check(mid);
         if(tam <= k)
         {
-            ans = max(ans, mid);
-            l = mid + 1;
+            ans = min(ans, mid);
+            r = mid - 1;
+            
         }
         else
-            r = mid -  1;
+            l = mid + 1;
     }
     cout << ans;
 }

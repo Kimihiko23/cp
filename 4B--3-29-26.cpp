@@ -58,7 +58,7 @@ tantei wa mou shindeiru
 @@@@@@@@@@@@@@@@@@@@@@@@%----------------=====:.........  .       .... ........===++++*******############*=*%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@*---------------=====+=........ ...       ...::. .....=++++**+=******#############+:%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@%--------------======+=. .... ..::..        .:::::.   =+******+++**#***######*#####*=#@@@@@@
-
+                                                                               
 */
 #include <bits/stdc++.h>
 #define int long long
@@ -68,7 +68,12 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int N =1e6+23;
+#define name "input"
+const int MOD1 = 1000020409;
+const int MOD = 1e9 + 7;
+const int N = 30 + 23;
+const int INF = 1e18;
+const int NINF = -1e18;
 int ans[N];
 int mn[N], mx[N];
 int n, x, k;
@@ -108,8 +113,13 @@ siesta()
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    if (fopen("input.txt","r")) 
+    {
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+    }
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     read();
     solve();
     

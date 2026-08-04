@@ -20,7 +20,9 @@ the .cpp file, algo, problem, any relate to my cp road
 | T.Hungweek3 | 2 | 0 | Low |
 | tpbweek5 | 5 | 0 | Low |
 | topictrainingweek4-tree | 5 | 0 | Medium |
-| thaythai | 21 | 11 | Medium |
+| thaythai | 26 | 13 | Medium |
+| lucianweek5 | 7 | 2 | Medium|
+| a-Chau point | 5 | 1 | High |
 
 > Last updated: July 2026
 

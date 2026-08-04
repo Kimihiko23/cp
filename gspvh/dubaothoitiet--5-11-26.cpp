@@ -71,7 +71,7 @@ using namespace std;
 #define name "weather"
 const int MOD = 1e9 + 7;
 const int N =1e5+23;
-vector<string> a{"NW", "WS", "SE", "EN"};
+vector<string> a{"NW", "SW", "SE", "NE"};
 string s;
 int dp[N];
 void read()

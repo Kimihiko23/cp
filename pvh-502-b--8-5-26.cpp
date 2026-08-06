@@ -61,7 +61,7 @@ tantei wa mou shindeiru
                                                                                
 */
 #include <bits/stdc++.h>
-#define int long long
+// #define int long long
 #define pb push_back
 #define fi first
 #define ll long long
@@ -72,8 +72,8 @@ using namespace std;
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 150000 + 23;
-const int INF = 1e18;
-const int NINF = -1e18;
+// const int INF = 1e18;
+// const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 int rand(int l, int r) 
@@ -81,7 +81,7 @@ int rand(int l, int r)
     return uniform_int_distribution<int>(l, r)(rng);
 }
 string s;
-int dp[N][6];
+ll dp[N][6];
 void read()
 {
     
@@ -95,16 +95,17 @@ void solve()
             break;
         // cout << s << "\n";
         int n = s.size();
-        s = " " + s;
-        memset(dp, 0, sizeof(dp));
-        for(int i = 1; i <= n; i++)
+        memset(dp, 0, sizeof(ll) * (n + 1) * 6);
+        for(int i = 0; i < n; i++)
         {
-            
-            dp[i][1] = dp[i - 1][1];
-            dp[i][2] = dp[i - 1][2];
-            dp[i][3] = dp[i - 1][3];
-            dp[i][4] = dp[i - 1][4];
-            if(s[i] == 'C')
+            if(i >= 1)
+            {
+                dp[i][1] = dp[i - 1][1];
+                dp[i][2] = dp[i - 1][2];
+                dp[i][3] = dp[i - 1][3];
+                dp[i][4] = dp[i - 1][4];
+            }
+            if(s[i] == 'C' && i >= 2)
             {
                 dp[i][4] += dp[i - 2][3];
                 dp[i][2] += dp[i - 2][1];
@@ -113,13 +114,14 @@ void solve()
             {
                 dp[i][1]++;
             }
-            if(s[i] == 'P')
+            if(s[i] == 'P' && i >= 2)
             {
                 dp[i][3] += dp[i - 2][2];
             }
+        
             // cout << dp[i][3] << "\n";
         }
-        cout << dp[n][4] << "\n";
+        cout << dp[n - 1][4] << "\n";
     }
 }
 siesta()
@@ -132,8 +134,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    freopen(name ".inp", "r", stdin);
-    freopen(name ".out", "w", stdout);
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     
     read();
     solve();

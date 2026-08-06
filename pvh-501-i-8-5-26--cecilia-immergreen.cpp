@@ -61,7 +61,7 @@ tantei wa mou shindeiru
                                                                                
 */
 #include <bits/stdc++.h>
-#define int long long
+// #define int long long
 #define pb push_back
 #define fi first
 #define ll long long
@@ -81,26 +81,22 @@ int rand(int l, int r)
     return uniform_int_distribution<int>(l, r)(rng);
 }
 vector<pair<int, int>> g[N];
-int dis[N][223];
+ll dis[N][223];
 int n, m, k;
-priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>> > pq;
+priority_queue<pair<ll, pair<int, int>>, vector<pair<ll, pair<int, int>>>, greater<pair<ll, pair<int, int>>> > pq;
 // vector<pair<int, pair<int, int>>> nx;
 void dijkstra(int x)
 {
-    // pq.push({0, {0, 1}});
-    //dis, k, u;
-    // dis[1][0] = 0;
-    //u, k
     while(!pq.empty())
     {
         auto tam = pq.top();
         pq.pop();
         int u = tam.se.se;
         int use = tam.se.fi;
-        int dist = tam.fi;
+        ll dist = tam.fi;
         if(dist > dis[u][use])
             continue;
-        for(auto i : g[u])
+        for (const auto &i : g[u])
         {
             int w = i.se;
             int v = i.fi;
@@ -147,11 +143,12 @@ void solve()
     {
         for(int j = 1; j <= n; j++)
         {
+            if(dis[j][i] != 1e18)
             pq.push({dis[j][i], {i, j}});
         }
         dijkstra(i);
     }
-    int ans = 1e18;
+    ll ans = 1e18;
     for(int i = 0; i <= k; i++)
     {
         ans = min(ans, dis[n][i]);

@@ -107,6 +107,7 @@ void solve()
                 if(check(ui, uj))
                 {
                         dp[ii][jj] += dp[ui][uj];
+                        if(dp[ii][jj] > MOD)
                         dp[ii][jj] -= MOD;
                 }
             }
@@ -129,8 +130,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    freopen(name ".inp", "r", stdin);
-    freopen(name ".out", "w", stdout);
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
     solve();
     int t;
     cin >> t;

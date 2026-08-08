@@ -58,7 +58,7 @@ tantei wa mou shindeiru
 @@@@@@@@@@@@@@@@@@@@@@@@%----------------=====:.........  .       .... ........===++++*******############*=*%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@*---------------=====+=........ ...       ...::. .....=++++**+=******#############+:%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@%--------------======+=. .... ..::..        .:::::.   =+******+++**#***######*#####*=#@@@@@@
-
+                                                                               
 */
 #include <bits/stdc++.h>
 #define int long long
@@ -68,8 +68,12 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int N =1e6+23;
-const int mod = 1e9+7;
+#define name "diameter"
+const int MOD1 = 1000020409;
+const int MOD = 1e9 + 7;
+const int N = 1e6 + 23;
+const int INF = 1e18;
+const int NINF = -1e18;
 vector<int> g[N];
 int n;
 int dist[N];
@@ -115,6 +119,11 @@ void solve()
         tam = max(tam, dist[i]);
     }
     cout << tam;
+    for(int i = 1; i <= n; i++)
+    {
+        g[i].clear();
+        dist[i] = 0;
+    }
     
     
     
@@ -126,9 +135,17 @@ siesta()
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    if (fopen("input.txt","r")) 
+    {
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
+    }
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
+    int t;
+    cin >> t;
     read();
     solve();
+    
 
 }

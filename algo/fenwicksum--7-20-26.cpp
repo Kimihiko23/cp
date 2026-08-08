@@ -98,6 +98,7 @@ int sum(int id)
         res += bit[id];
         id -= id & (-id);
     }
+    return res;
 }
 int get(int l, int r)
 {

@@ -95,11 +95,12 @@ void solve()
         {
             ans.pb('2');
             ans.pb('2');
+            ans.pb('3');
         }
         else
         if(i == '6')
         {
-            ans.pb('2');
+            ans.pb('5');
             ans.pb('3');
         }
         else
@@ -108,19 +109,24 @@ void solve()
             ans.pb('2');
             ans.pb('2');
             ans.pb('2');
-            ans.pb('2');
+            ans.pb('7');
         }
         else
         if(i == '9')
         {
             ans.pb('3');
             ans.pb('3');
+            ans.pb('7');
+            ans.pb('2');
         }
         else
-        if(i == '1')
+        if(i == '1' || i == '0')
             continue;
         else
-            ans.pb(i);   
+            ans.pb(i);
+        // for(auto i : ans)
+        //     cout << i;
+        // cout << "\n";
     }
     sort(ans.begin(), ans.end());
     reverse(ans.begin(), ans.end());

@@ -106,7 +106,9 @@ int get(int l, int r)
 }
 void read()
 {
-
+    // update(1, 10);
+    // add(0, 1);
+    // cout << get(1, 5);
 }
 void solve()
 {

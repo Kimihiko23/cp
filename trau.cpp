@@ -71,14 +71,40 @@ using namespace std;
 const int N =1e5+23;
 
 
-int q;
+int n;
+int a[N];
+bool dd[N];
 void read()
 {
-   cin >> q;
+   cin >> n;
+   for(int i = 1; i <= n; i++)
+   {
+        cin >> a[i];
+   }
 }
 void solve()
 {
-   
+    int ans = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        int sum = 0;
+        int vt;
+        cin >> vt;
+        dd[vt] = 1;
+        for(int j = 1; j <= n + 1; j++)
+        {
+            if(dd[j])
+            {
+                sum += a[j];
+            }
+            else
+            {
+                ans = max(ans, sum);
+                sum = 0;
+            }
+        }
+        cout << ans << "\n";
+    }
 }
 siesta()
 {
@@ -86,7 +112,7 @@ siesta()
     cin.tie(0);
     cout.tie(0);
     freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
+    freopen("a1.out","w",stdout);
     read();
     solve();
   

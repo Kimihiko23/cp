@@ -91,7 +91,9 @@ void read()
         for(int j = 1; j <= m; j++)
         {
             cin >> a[i][j];
+            // cout << a[i][j] << " ";
         }
+        // cout << "\n";
     }
 }
 void solve()
@@ -103,8 +105,30 @@ void solve()
     pre.resize(n + 1);
     for(int j = 1; j <= m; j++)
     {
-       
+        // fill(tam.begin(), tam.end(), 0);
+        // fill(pre.begin(), pre.end(), 0);
+
+    //    tam.clear();
+    //    pre.clear();
+       for(int i = 1; i <= n; i++)
+       {
+            tam[i] = a[i][j];
+       }
+       sort(tam.begin() + 1, tam.end());
+       for(int i = 1; i <= n; i++)
+       {
+            // cout << tam[i] << " ";
+            pre[i] = pre[i - 1] + tam[i];
+       }
+    //    cout << "\n";
+       for(int i = 1; i <= n; i++)
+       {    
+            // cout << pre[n] - pre[i] << " " << tam[i] * (n - i) << "\n";
+            ans += pre[n] - pre[i] - tam[i] * (n - i);
+            // cout << ans << "\n";
+       }
     }
+    cout << ans << "\n";
 }
 siesta()
 {

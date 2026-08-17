@@ -139,23 +139,23 @@ void read()
 }
 void solve()
 {
-    if(n <= 1000 && q <= 1000)
+    // if(n <= 1000 && q <= 1000)
         sub1();
-    else
-        sub2();
+    // else
+    //     sub2();
 }
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    if (fopen("input.txt","r")) 
-    {
-        freopen("input.txt","r",stdin);
-        freopen("output.txt","w",stdout);
-    }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
+    // if (fopen("input.txt","r")) 
+    // {
+    //     freopen("input.txt","r",stdin);
+    //     freopen("output.txt","w",stdout);
+    // }
+    freopen(name ".inp", "r", stdin);
+    freopen(name ".out", "w", stdout);
     
     read();
     solve();

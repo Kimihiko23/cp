@@ -68,7 +68,7 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
+#define name "waytovt"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
@@ -130,7 +130,7 @@ void read()
     dis.resize(n + 1, vector<int>(m +1));
     for(int i = 1; i <= k; i++)
     {
-        cin >> ways[i].x >> ways[i].y >> ways[i].t;
+        cin >> ways[i].y >> ways[i].x >> ways[i].t;
     }
 }
 void solve()
@@ -150,13 +150,13 @@ siesta()
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    if (fopen("input.txt","r")) 
-    {
-        freopen("input.txt","r",stdin);
-        freopen("output.txt","w",stdout);
-    }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
+    // if (fopen("input.txt","r")) 
+    // {
+    //     freopen("input.txt","r",stdin);
+    //     freopen("output.txt","w",stdout);
+    // }
+    freopen(name ".inp", "r", stdin);
+    freopen(name ".out", "w", stdout);
     
     read();
     solve();

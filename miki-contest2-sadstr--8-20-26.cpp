@@ -70,11 +70,11 @@ tantei wa mou shindeiru
 #define siesta main
 using namespace std;
 
-#define name "input"
+#define name "sadstring"
 
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 5e5 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
 

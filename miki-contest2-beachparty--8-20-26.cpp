@@ -68,7 +68,7 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
+#define name "beachparty"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 2e5 + 23;

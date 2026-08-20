@@ -90,7 +90,7 @@ void read()
     int val;
     cin >> val;
     now = val;
-    int lst = 0;
+    int lst = -1;
     for(int i = 1; i < n; i++)
     {
         cin >> val;
@@ -126,6 +126,8 @@ void read()
     {
         ans += now;   
     }
+    if(lst == -1)
+        ans += now;
     cout << ans << "\n";
 }
 void solve()

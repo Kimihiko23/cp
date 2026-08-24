@@ -80,46 +80,60 @@ int rand(int l, int r)
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
+vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 
 void read()
 {
-    int n;
-    cin >> n;
-    while(n--)
-    {
-        int x;
-        cin >> x;
-        bool nope = true;
-        for(int i = 2; i <= 9; i++)
-        {
-            for(int j = i + 1; j <= 9; j++)
-            {
-                for(int z = j + 1; z <= 9; z++)
-                {
-                    if(i != j && j != z && i * j * z == x)
-                    {
-                        nope = false;
-                        cout << "YES\n";
-                        cout << i << " " << j << " " << z << "\n";
-                    }
-                }
-            }
-        }
-        if(nope)
-        {
-            cout << "NO\n";
-        }
-    }
+
 }
+
 void solve()
 {
-    
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        int a = 0, b = 0;
+
+        for (int i = 2; i * i <= n; i++)
+        {
+            if (n % i == 0)
+            {
+                a = i;
+                n /= i;
+                break;
+            }
+        }
+
+        for (int i = 2; i * i <= n; i++)
+        {
+            if (n % i == 0 && i != a)
+            {
+                b = i;
+                n /= i;
+                break;
+            }
+        }
+
+        int c = n;
+
+        if (a && b && c > 1 && a != b && b != c && a != c)
+            cout << "YES\n" << a << ' ' << b << ' ' << c << '\n';
+        else
+            cout << "NO\n";
+    }
 }
+
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
+
     if (fopen("input.txt","r")) 
     {
         freopen("input.txt","r",stdin);
@@ -130,4 +144,4 @@ siesta()
     
     read();
     solve();
-} 
+}

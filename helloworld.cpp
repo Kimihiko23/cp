@@ -80,6 +80,10 @@ int rand(int l, int r)
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
+int flor(int a, int b)
+{
+    return a / b - (a % b && (a ^ b) < 0);
+}
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 void read()
 {

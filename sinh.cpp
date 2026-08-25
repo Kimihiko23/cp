@@ -34,21 +34,19 @@ main()
     int c = 0;
     ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
     //tc la so lan test
-    for (int tc = 1; tc <= 1; tc++){
+    for (int tc = 1; tc <= 150; tc++){
         ofstream fo("input.txt");
         //ofstream la cout
         memset(dd, 0, sizeof(dd));
-        fo << n << endl;
-        for (int i = 1; i<=n; i++)
+        int t = rand(1, 200);
+        int s = rand(1, t);
+        fo << n << " " << t << " " << s << endl;
+        for(int i = 1; i <= n; i++)
         {
-            fo << rand(1, (int)1e2) << " ";
+            fo << rand(1, 20) << " " << rand(1, 20) << endl;
         }
-        fo << endl;
-        randhoanvin(0);
-        for(auto i : s)
-        {
-            fo << i << " ";
-        }
+
+        
 
         system("ac.exe");
         system("trau.exe");

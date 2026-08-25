@@ -68,10 +68,10 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "bear"
+#define name "space"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 23;
+const int N = 3e3 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -80,63 +80,68 @@ int rand(int l, int r)
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
-int par[N];
-int sz[N];
-int sum[N];
-bool on[N];
-int a[N];
-int n;
-int find(int x)
+int flor(int a, int b)
 {
-    if(par[x] != x)
-        return par[x] = find(par[x]);
-    return par[x];
+    return a / b - (a % b && (a ^ b) < 0);
 }
-void join(int u, int v)
-{
-    u = find(u);
-    v = find(v);
-    if(u == v)
-        return;
-    if(sz[v] > sz[u])
-        swap(u, v);
-    par[v] = u;
-    sz[u] += sz[v];
-    sum[u] += sum[v];
-}
+vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int n, t, s;
+int dp[N];
+int dp2[N];
+int best[N][N];
+int p[N], w[N];
 void read()
 {
-    cin >> n;
+    cin >> n >> t >> s;
     for(int i = 1; i <= n; i++)
     {
-        cin >> a[i];
-        par[i] = i;
-        sz[i] = 1;
-        sum[i] = a[i];
+        cin >> p[i] >> w[i];
     }
 }
 void solve()
 {
     int ans = 0;
-    int vt = 0;
     for(int i = 1; i <= n; i++)
     {
-        cin >> vt;
-        int nx = min(vt + 1, n);
-        int prv = max(1ll, vt - 1);
-        if(on[nx])
+        for(int j = s; j >= 1; j--)
         {
-            join(vt, nx);
+            if(j - w[i] >= 0)
+            {
+                dp[j] = max(dp[j], dp[j - w[i]] + p[i]);
+            }
+            ans = max(ans, dp[j]);
+            best[i][j] = max(best[i][j], dp[j]);
         }
-        if(on[prv])
-        {
-            join(vt, prv);
-        }
-        on[vt] = 1;
-        vt = find(vt);
-        ans = max(ans, sum[vt]);
-        cout << ans << "\n";
     }
+    // for(int i = 1; i <= n; i++)
+    // {
+    //     for(int j = 1; j <= s; j++)
+    //     {
+    //         cout << i << " " << j << " " << best[i][j] << "\n";
+    //     }
+    // }
+    // cout << t - s << "\n";
+    for(int i = n; i >= 1; i--)
+    {
+        for(int j = t - s; j >= 1; j--)
+        {
+            if(j - w[i] >= 0)
+            {
+                dp2[j] = max(dp2[j], dp2[j - w[i]] + p[i]);
+            }
+            // if(j == t - s)
+            // {
+            //     ans = max(ans, dp2[j] + best[i - 1][s - 1]);
+            //     // cout << j << " " << i + 1 << " " << s - 1 << "\n";
+            // }
+            // else
+            // {
+                ans = max(ans, dp2[j] + best[i - 1][s]);
+                // cout << j << " " << i + 1 << " " << s << "\n";
+            // }
+        }
+    }
+    cout << ans;
 }
 siesta()
 {

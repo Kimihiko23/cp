@@ -71,40 +71,70 @@ using namespace std;
 const int N =1e5+23;
 
 
-int n;
-int a[N];
-bool dd[N];
+int n, t, s;
+int p[N], w[N];
+int ans = 0;
+void sinh(string tam, int vt)
+{
+    if(vt == n)
+    {
+        int res = 0;
+        int vt = 0;
+        int used = 0;
+        while(vt < n)
+        {
+            if(tam[vt] == '1')
+            {
+                if(used + w[vt + 1] <= s)
+                {
+                    used += w[vt + 1];
+                    res += p[vt + 1];
+                    ans = max(ans, res);
+                }  
+                else
+                    break;
+            }
+            vt++;
+        }
+        used = s;
+        if(used < s)
+        {
+            used = s - 1;
+        }
+        for(int i = vt; vt < n; vt++)
+        {
+             if(tam[vt] == '1')
+            {
+                if(used + w[vt + 1] <= t)
+                {
+                    used += w[vt + 1];
+                    res += p[vt + 1];
+                }  
+                else
+                    break;
+            }
+        }
+        ans = max(ans, res);
+    }
+    for(int i = vt + 1; i <= n; i++)
+    {
+        sinh(tam + '1', vt + 1);
+        sinh(tam + '0', vt + 1);
+    }
+    
+}
 void read()
 {
-   cin >> n;
+   cin >> n >> t >> s;
    for(int i = 1; i <= n; i++)
    {
-        cin >> a[i];
+        cin >> p[i] >> w[i];
    }
 }
 void solve()
 {
-    int ans = 0;
-    for(int i = 1; i <= n; i++)
-    {
-        int sum = 0;
-        int vt;
-        cin >> vt;
-        dd[vt] = 1;
-        for(int j = 1; j <= n + 1; j++)
-        {
-            if(dd[j])
-            {
-                sum += a[j];
-            }
-            else
-            {
-                ans = max(ans, sum);
-                sum = 0;
-            }
-        }
-        cout << ans << "\n";
-    }
+    sinh("", 0);
+    cout << ans;
 }
 siesta()
 {

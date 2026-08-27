@@ -87,7 +87,7 @@ int flor(int a, int b)
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 void read()
 {
-
+    
 }
 void solve()
 {

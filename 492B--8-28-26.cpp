@@ -61,7 +61,7 @@ tantei wa mou shindeiru
                                                                                
 */
 #include <bits/stdc++.h>
-#define int long long
+#define int long double
 #define pb push_back
 #define fi first
 #define ll long long
@@ -71,36 +71,52 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const ll N = 1e5 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
+const long double ESP = 1e-9;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-int rand(int l, int r) 
-{
-    return uniform_int_distribution<int>(l, r)(rng);
-}
-int flor(int a, int b)
-{
-    return a / b - (a % b && (a ^ b) < 0);
-}
+// int rand(int l, int r) 
+// {
+//     return uniform_int_distribution<int>(l, r)(rng);
+// }
+// int flor(int a, int b)
+// {
+//     return a / b - (a % b && (a ^ b) < 0);
+// }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-int n, l;
+ll n;
+int l;
 int a[N];
 bool check(long double x)
 {
     bool covst = false, covl = false;
-    vector<pair<long double, long double>> cover;
-    for(int i = 1; i <= n; i++)
+    vector<pair<int, int>> cover;
+    for(ll i = 1; i <= n; i++)
     {
         cover.pb({a[i] - x, a[i] + x});
     }
     sort(cover.begin(), cover.end());
+    if(cover[0].fi <= 0)
+        covst = true;
+    for(ll i = 0; i < n - 1; i++)
+    {
+        if(cover[i].fi <= 0)
+        {
+            covst = true;
+        }
+        if(cover[i + 1].fi - cover[i].se > ESP)
+            return false;
+    }
+    if(cover[n - 1].se >= l)
+        covl = true;
+    return(covl && covst);
 }
 void read()
 {
     cin >> n >> l;
-    for(int i = 1; i <= n; i++)
+    for(ll i = 1; i <= n; i++)
     {
         cin >> a[i];
     }
@@ -108,12 +124,23 @@ void read()
 }
 void solve()
 {
-    long double ans = 1e18;
-    long double l = 0, r = 1e18;
+    int ans = 1e18;
+    int l = 0, r = 1e18;
     for(int i = 1; i <= 100; i++)
     {
-
+        int mid = (l + r) / 2.0;
+        if(check(mid))
+        {
+            ans = mid;
+            r = mid - 1;
+        }
+        else
+        {
+            l = mid + 1;
+        }
     }
+    // cout << check(1);
+    cout << fixed << setprecision(9) << ans;
 }
 siesta()
 {

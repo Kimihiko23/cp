@@ -96,17 +96,27 @@ void read()
 }
 void solve()
 {
-    if(k % 2 == 0 && n % 2 != 0)
+    if((n - (k - 1) * 2) % 2 == 0 && (n - (k - 1) * 2) > 0)
     {
+        cout << "YES\n";
+        for(int i = 1; i < k; i++)
+        {
+            cout << "2 ";
+        }
+        cout << n - (k - 1) * 2 << "\n";
+    }
+    else
+    if((n - (k - 1)) % 2 == 1 && (n - (k - 1)) > 0)
+    {
+        cout << "YES\n";
+        for(int i = 1; i < k; i++)
+        {
+            cout << "1 ";
+        }
+        cout << n - (k - 1) << "\n";
+    }
+    else
         cout << "NO\n";
-        return;
-    }
-    if(k == 1)
-    {
-        cout << n << "\n";
-        return;
-    }
-    bool oddn = 1, oddk = 1;
 }
 siesta()
 {
@@ -120,7 +130,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

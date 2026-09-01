@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,13 +85,35 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int n, m;
+int a[N];
+int pre[N];
+int ans[N];
 void read()
 {
-    
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
 }
 void solve()
 {
-    
+    sort(a + 1, a + n + 1);
+    for(int i = 1; i <= n; i++)
+    {
+        pre[i] = pre[i - 1] + a[i];
+    }
+    int tam = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        ans[i] = pre[i];
+        if(i > m)
+        {
+            ans[i] += ans[i - m];
+        }
+        cout << ans[i] << " ";
+    }
 }
 siesta()
 {

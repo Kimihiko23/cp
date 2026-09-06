@@ -86,6 +86,8 @@ int flor(int a, int b)
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 string l, r;
+int dp[105][20][2];
+//pos old lead;
 int g(string &x)
 {
     for(int i = 0; i < x.size() - 1; i++)

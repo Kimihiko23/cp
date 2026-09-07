@@ -97,7 +97,22 @@ void read()
 }
 void solve()
 {
-    
+    int l = 1;
+    int tam = 0;
+    int ans = 0;
+    for(int r = 1; r <= n; r++)
+    {
+        tam += a[r];
+        while(tam > k)
+        {
+            tam -= a[l];
+            l++;
+        }
+        if(l > r) tam = 0;
+        ans = max(ans, tam);
+    }
+    if(ans == 0) cout << -1;
+    else cout << ans;
 }
 siesta()
 {

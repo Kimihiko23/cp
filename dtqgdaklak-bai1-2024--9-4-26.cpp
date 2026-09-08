@@ -96,9 +96,41 @@ int g(string &x)
     }
     return 1;
 }
+int f(string &num, int pos, int old, int tight, int lead)
+{
+    //lead = 1, zero make no sene like 001, lead = 0 zero make sense 100
+    if(pos == 0)
+        return 1;
+    if(tight == 0 && dp[pos][old][lead] != -1)
+        return dp[pos][old][lead];
+    int limit = 9;
+    if(tight == 1)
+        limit = num[num.size() - pos] - '0';
+    int res = 0;
+    for(int i = 0; i <= limit; i++)
+    {
+        if(i == 0)
+        {
+            if(lead)
+            {
+                res += f(num, pos - 1, i, tight & (limit == i), 1);
+            }
+            else
+            if(old != 0)
+                res += f(num, pos - 1, i, tight & (limit == i), 0);
+        }
+        else
+        if(i != old)
+            res += f(num, pos - 1, i, tight & (limit == i), 0);
+    }
+    if(tight == 0)
+        dp[pos][old][lead] = res;
+    return res;
+}
 void read()
 {
     cin >> l >> r;
+    cout << f(r, r.size(), -1, 1, 1) - f(l, l.size(), -1, 1, 1) + g(l) << "\n";
 }
 void solve()
 {
@@ -116,7 +148,12 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    memset(dp, -1, sizeof(dp));
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

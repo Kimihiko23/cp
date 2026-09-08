@@ -68,7 +68,7 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
+#define name "PEARL"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
@@ -85,7 +85,7 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-int dp[1500][20][2];
+int dp[20][1500][2];
 bool dd[N];
 int n;
 vector<int> g[1500];
@@ -112,9 +112,38 @@ int cal(string s)
 {
     int ss = stoll(s);
     int tam = sumnsqr(ss);
-    if(dd[tam])
+    if(!dd[tam])
         return 1;
     return 0;
+}
+int f(string &num, int pos, int tight, int sum, int lead)
+{
+    if(pos == 0 && !dd[sum])
+        return 1;
+    else
+    if(pos == 0 && dd[sum])
+        return 0;
+    int limit = 9;
+    if(tight)
+        limit = num[num.size() - pos] - '0';
+    if(!tight && dp[pos][sum][lead] != -1)
+        return dp[pos][sum][lead];
+    int res = 0;
+    for(int i = 0; i <= limit; i++)
+    {
+        if(i == 0)
+        {
+            if(lead)
+                res += f(num, pos - 1, tight && (i == limit), sum, 1);
+            else
+                res += f(num, pos - 1, tight && (i == limit), sum + i * i, 0);
+        }
+        else
+            res += f(num, pos - 1, tight && (i == limit), sum + i * i, 0);
+    }
+    if(!tight)
+        dp[pos][sum][lead] = res;
+    return res;
 }
 void read()
 {
@@ -122,16 +151,23 @@ void read()
 }
 void solve()
 {
+    memset(dp, -1, sizeof(dp));
     for(int i = 1; i < 1500; i++)
     {
         g[sumnsqr(i)].pb(i);
     }
     dfs(1);
-    // for(int i = 1; i < 1500; i++)
+    string l, r;
+    // for(int i = 1; i < 15; i++)
     // {
-    //     if(!dd[i])
-    //         cout << i << "\n";
+    //     cout << i << " " << dd[i] << "\n";
     // }
+    while(n--)
+    {
+        cin >> l >> r;
+        // cout << f(r, r.size(), 1, 0, 1);
+        cout << f(r, r.size(), 1, 0, 1) - f(l, l.size(), 1, 0, 1) + cal(l) << "\n";
+    }
 }
 siesta()
 {
@@ -143,8 +179,8 @@ siesta()
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
     }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
+    freopen(name ".inp", "r", stdin);
+    freopen(name ".out", "w", stdout);
     
     read();
     solve();

@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 1e18;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,25 +85,108 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-vector<pair<int, int>> query[N];
+struct query1
+{
+    int edx, edy, id;
+};
+vector<query1> query;
+bool cmp1(query1 a, query1 b)
+{
+    return a.edy < b.edy;
+}
 map<int, int> mp1, mp2;
 struct rec
 {
     int edx, edy;
 };
-int n;
+int n, q;
 bool cmp(rec a, rec b)
 {
     return a.edy < b.edy;
 }
 vector<rec> a;
+vector<int> x, y;
+int bit[N];
+void add(int id, int val)
+{
+    while(id <= n + q)
+    {
+        bit[id] += val;
+        id += id & (-id);
+    }
+    // {
+    //     bit[id] += val;
+    //     id += id & (-id);
+    // }
+}
+int sum(int id)
+{
+    int res = 0;
+    while(id > 0)
+    {
+        res += bit[id];
+        id -= id & (-id);
+    }
+    return res;
+}
+int get(int l, int r)
+{
+    return sum(r) - sum(l - 1);
+}
+int ans[N];
 void read()
 {
+    cin >> n;
+    int stx, sty, edx, edy;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> stx >> sty >> edx >> edy;
+        a.pb({edx, edy});
+        x.pb(edx);
+        y.pb(edy);
+    }
+    cin >> q;
+    for(int i = 1; i <= q; i++)
+    {
+        cin >> edx >> edy;
+        query.pb({edx, edy, i});
+        x.pb(edx);
+        y.pb(edy);
+    }
     
 }
 void solve()
 {
-    
+    sort(x.begin(), x.end());
+    sort(y.begin(), y.end());
+    x.erase(unique(x.begin(), x.end()), x.end());
+    y.erase(unique(y.begin(), y.end()), y.end());
+    for(int i = 1; i <= n; i++)
+    {
+        a[i - 1].edx = lower_bound(x.begin(), x.end(), a[i - 1].edx) - x.begin() + 1;
+        a[i - 1].edy = lower_bound(y.begin(), y.end(), a[i - 1].edy) - y.begin() + 1;
+    }
+    for(int i = 1; i <= q; i++)
+    {
+        query[i - 1].edx = lower_bound(x.begin(), x.end(), query[i - 1].edx) - x.begin() + 1;
+        query[i - 1].edy = lower_bound(y.begin(), y.end(), query[i - 1].edy) - y.begin() + 1;
+    }
+    sort(a.begin(), a.end(), cmp);
+    sort(query.begin(), query.end(), cmp1);
+    int vt = 0;
+    for(int i = 0; i < q; i++)
+    {
+        while(vt < n && a[vt].edy <= query[i].edy)
+        {
+            add(a[vt].edx, 1);
+            vt++;
+        }
+        ans[query[i].id] = get(1, query[i].edx);
+    }
+    for(int i = 1; i <= q; i++)
+    {
+        cout << ans[i] << "\n";
+    }
 }
 siesta()
 {

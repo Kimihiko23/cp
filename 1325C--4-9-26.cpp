@@ -68,51 +68,118 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-const int MOD = 1000020407;
-const int N =1e5+23;
+#define name "input"
+const int MOD1 = 1000020409;
+const int MOD = 1e9 + 7;
+const int N = 1e5 + 23;
+const int INF = 1e18;
+const int NINF = -1e18;
+mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-
-void read()
+int rand(int l, int r) 
 {
-    int n, k;
-    cin >> n >> k;
-    int l = 1, r = 2 * k;
-    int ans = 1e18;
-    while(l <= r)
+    return uniform_int_distribution<int>(l, r)(rng);
+}
+int flor(int a, int b)
+{
+    return a / b - (a % b && (a ^ b) < 0);
+}
+vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int n;
+vector<pair<int, int>> edg;
+vector<pair<int, int>> g[N];
+int ans[N];
+int in[N];
+set<int> remain;
+int dd[N];
+bool first = false;
+void dfs(int u, int p)
+{
+    if(in[u] >= 3 && !first)
     {
-        int mid = (l + r) / 2;
-        if(mid - mid / n >= k)
+        first = true;
+        // cout << "gei";
+        for(int i = 0; i < 3; i++)
         {
-            // if(mid % n == 0)
-            // {
-            //     ans = mid + 1;
-            // }
-            ans = mid;
-            r = mid - 1;
-        }
-        else
-        {
-            l = mid + 1;
+            // int v = g[u][i].fi;
+            int id = g[u][i].se;
+            if(ans[id] == -1)
+            {
+                ans[id] = *remain.begin();
+                remain.erase(remain.begin());
+            }
         }
     }
-    cout << ans << endl;
+    else
+    {
+        for(auto [v, id] : g[u])
+        {
+            if(v == p) continue;
+            if(ans[id] == -1)
+            {
+                ans[id] = *remain.begin();
+                remain.erase(remain.begin());
+            }
+        }
+    }
+    return;
+}
+void read()
+{
+    cin >> n;
+    for(int i = 1; i < n; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        edg.pb({u, v});
+        g[u].pb({v, i});
+        g[v].pb({u, i});
+        in[u]++;
+        in[v]++;
+        
+    }
 }
 void solve()
 {
-    
+    memset(ans, -1, sizeof(ans));
+    for(int i = 0; i <= n - 2; i++)
+    {
+        remain.insert(i);
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        if(in[i] >= 3)
+        {
+            dd[i] = 1;
+            dfs(i, -1);
+            // break;
+        }
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        if(dd[i] == 0)
+        {
+            dfs(i, -1);
+        }
+    }
+    for(int i = 1; i < n; i++)
+    {
+        cout << ans[i] << "\n";
+    }
 }
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    freopen("input.txt","r",stdin);
-    freopen("output.txt","w",stdout);
-    int t;
-    cin >> t;
-    while(t--)
+    if (fopen("input.txt","r")) 
     {
-        read();
-        solve();
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
     }
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
+    
+    read();
+    solve();
 } 

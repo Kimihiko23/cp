@@ -97,13 +97,13 @@ void dijkstra()
     {
         auto [d, p] = pq.top();
         pq.pop();
-        if(dis[p.se].fi != d) continue;
-        for(auto [v, w] : g[p.se])
+        if(dis[p.fi].fi != d) continue;
+        for(auto [v, w] : g[p.fi])
         {
-            if(dis[v].fi > dis[p.se].fi + w)
+            if(dis[v].fi > dis[p.fi].fi + w)
             {
-                dis[v].fi = dis[p.se].fi + w;
-                dis[v].se = p.se;
+                dis[v].fi = dis[p.fi].fi + w;
+                dis[v].se = p.fi;
                 pq.push({dis[v].fi, {v, dis[v].se}});
             }
         }
@@ -114,17 +114,18 @@ void read()
     memset(dis, 0x3f, sizeof(dis));
     cin >> n >> m;
     int u, v, w;
-    for (int i = 1; i <= m; i++)
-    {
-        cin >> u >> v >> w;
-        g[u].pb({v, w});
-        g[v].pb({u, w});
-    }
     for(int i = 1; i <= n; i++)
     {
         cin >> a[i];
         dis[i] = {a[i], i};
-        pq.push({0, {i, i}});
+        pq.push({a[i], {i, i}});
+    }
+    for (int i = 1; i <= m; i++)
+    {
+        cin >> u >> v >> w;
+        w *= 2;
+        g[u].pb({v, w});
+        g[v].pb({u, w});
     }
 }
 void solve()
@@ -132,7 +133,7 @@ void solve()
     dijkstra();
     for(int i = 1; i <= n; i++)
     {
-        
+        cout << dis[i].fi << " ";
     }
 }
 siesta()

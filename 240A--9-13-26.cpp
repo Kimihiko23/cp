@@ -105,29 +105,51 @@ void solve()
     string s;
     int mem;
     int mx = 0;
-    for(int i = 1; i <= n; i++)
+    for (int i = 1; i <= n; i++)
     {
         cin >> s >> mem;
-        int x;
-        int cnt0 = 0;
-        int sum = 0;
-        for(int j = 1; j <= mem; j++)
+        int fav = 0;
+        int zero = 0;
+        int nonfav = 0;
+        for (int j = 1; j <= mem; j++)
         {
+            int x;
             cin >> x;
-            sum += cnt[x];
-            if(x == 0) cnt0++;
+
+            if (x == 0)
+            {
+                zero++;
+            }
+            else if (cnt[x])
+            {
+                fav++;
+            }
+            else
+            {
+                nonfav++;
+            }
         }
-        int more = 0;
-        if(sum < k) more = min(cnt0, k - sum);
-        a.pb({sum, sum + more});
-        mx = max(mx, a[i - 1].se);
-        // cout << sum << " " << sum + more << "\n";
+        int mn = fav + max(0LL, zero - ((m - k) - nonfav));
+        int mx = fav + min(zero, k - fav);
+        a.push_back({mn, mx});
     }
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        if (a[i].fi == mx)
+        bool best = true;
+        bool notbest = false;
+
+        for (int j = 0; j < n; j++)
+        {
+            if (i == j) continue;
+            if (a[j].se > a[i].fi)
+                best = false;
+            if (a[j].fi > a[i].se)
+                notbest = true;
+        }
+
+        if (best)
             ans[i] = 0;
-        else if (a[i].se < mx)
+        else if (notbest)
             ans[i] = 1;
         else
             ans[i] = 2;

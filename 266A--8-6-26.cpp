@@ -72,7 +72,7 @@ using namespace std;
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
-const int INF = 1e18;
+const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
@@ -80,10 +80,42 @@ int rand(int l, int r)
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
+int flor(int a, int b)
+{
+    return a / b - (a % b && (a ^ b) < 0);
+}
+vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+stack<char> st;
 int n;
 string s;
 void read()
 {
+    cin >> n >> s;
+    int ans = 0;
+    for(auto x : s)
+    {
+        if(st.empty())
+        {
+            st.push(x);
+        }
+        else
+        {
+            if(st.top() == x)
+            {
+                // cout << "gei\n";
+                st.pop();
+                ans++;
+                st.push(x);
+            }
+            else
+            {
+                st.push(x);
+            }
+        }
+        // cout << st.size() << "\n";
+    }
+    // cout << st.size() << "\n";
+    cout << ans;
 
 }
 void solve()

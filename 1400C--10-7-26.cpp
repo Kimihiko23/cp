@@ -95,11 +95,9 @@ void read()
     cin >> s >> x;
     n = s.size();
     s = " " + s;
-    // cout << n << " " << s << "\n";
     for (int i = 1; i <= n; i++)
     {
         ans[i] = -1;
-        // check[i] = -1;
     }
     for(int i = 1; i <= n; i++)
     {
@@ -111,33 +109,10 @@ void read()
                 ans[i + x] = 0;
         }
     }
-    // for(int i = 1; i <= x; i++)
-    // {
-    //     if(ans[i + x] == -1)
-    //         ans[i + x] = s[i] - '0';
-    //     else
-    //         if(ans[i + x] != s[i] - '0')
-    //         {
-    //             cout << "-1\n";
-    //             return;
-    //         }
-    // }
-    // for(int i = n - x + 1; i <= n; i++)
-    // {
-    //     if(ans[i - x] == -1)
-    //         ans[i - x] = s[i] - '0';
-    //     else
-    //         if(ans[i - x] != s[i] - '0')
-    //         {
-    //             cout << "-1\n";
-    //             return;
-    //         }
-    // }
     for(int i = 1; i <= n; i++)
     {
         if(ans[i] == -1)
             ans[i] = 1;
-        // cout << ans[i];
     }
     for(int i = 1; i <= n; i++)
     {
@@ -155,12 +130,6 @@ void read()
         
 
     }
-    // cout << n << " " << s << "\n";
-    // for(int i = 1; i <= n; i++)
-    // {
-    //     cout << check[i];
-    // }
-    // cout << "\n";
     for(int i = 1; i <= n; i++)
     {
         if(check[i] != s[i] - '0')

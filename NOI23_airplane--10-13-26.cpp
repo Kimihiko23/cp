@@ -69,57 +69,60 @@ tantei wa mou shindeiru
 #define siesta main
 using namespace std;
 #define name "input"
-
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
-
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-int rand(int l, int r)
+int rand(int l, int r) 
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
-
 int flor(int a, int b)
 {
     return a / b - (a % b && (a ^ b) < 0);
 }
-
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-
-int n, a, d;
-
+int n, m;
+vector<int> g[N];
+int h[N];
+int dis[N];
+priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>> > pq;
 void read()
 {
-    cin >> n >> a >> d;
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> h[i];
+        dis[i] = 1e18;
+    }
+    int u, v;
+    for(int i = 1; i <= m; i++)
+    {
+        cin >> u >> v;
+        g[u].pb(v);
+        g[v].pb(u);
+    }
 }
-
 void solve()
 {
-    const int c = 368131125;
-    const int mod = 1000000000LL;
-    const int k = 12000000000LL;
-
-    cout << 1 + k * (c * a % mod) << ' '
-         << k * (c * d % mod) << '\n';
+    
 }
-
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-
-    if (fopen("input.txt", "r"))
+    if (fopen("input.txt","r")) 
     {
-        freopen("input.txt", "r", stdin);
-        freopen("output.txt", "w", stdout);
+        freopen("input.txt","r",stdin);
+        freopen("output.txt","w",stdout);
     }
-
+    // freopen(name ".inp", "r", stdin);
+    // freopen(name ".out", "w", stdout);
+    
     read();
     solve();
-}
-// really i cant understand wtf i am writting so just read the editorial, and cant belive how it work
+} 

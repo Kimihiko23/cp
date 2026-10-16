@@ -85,13 +85,40 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int n;
+int a[N];
+int dp[N], sum = 0;
+int add(int aa, int bb)
+{
+    return (aa % MOD + bb % MOD) % MOD;
+}
 void read()
 {
-    
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+        sum += a[i];
+    }
 }
 void solve()
 {
-    
+    int ans = 0;
+    dp[0] = 1;
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = sum ; j >= a[i]; j--)
+        {
+            dp[j] = add(dp[j], dp[j - a[i]]);
+        }
+    }
+    for(int i = 1; i <= sum; i++)
+    {
+        ans = (ans + (i + 1) / 2) % MOD;
+        // cout << dp[i] << "\n";
+    }
+    // cout << ans << "\n";
+
 }
 siesta()
 {

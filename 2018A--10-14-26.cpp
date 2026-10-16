@@ -71,12 +71,12 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
-int rand(int l, int r) 
+int rand(int l, int r)
 {
     return uniform_int_distribution<int>(l, r)(rng);
 }
@@ -87,54 +87,40 @@ int flor(int a, int b)
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int n, k;
 int a[N];
+int S, M;
+
 void read()
 {
     cin >> n >> k;
+    S = 0, M = 0;
     for(int i = 1; i <= n; i++)
     {
         cin >> a[i];
+        S += a[i];
+        M = max(M, a[i]);
     }
-    sort(a + 1, a + 1 + n, greater());
-    int mxsz = a[1];
+
     int ans = 1;
-    int sz = 0;
-    for(int i = 2; i <= n; i++)
+    for(int d = 1; d <= n; d++)
     {
-        // cout << a[i] << "\n";
-        sz += a[i];
-        if(sz >= mxsz)
-        {
-            sz %= mxsz;
-            ans++;
-        }
+        int m = max(M, (S + d - 1) / d);
+        if(m * d <= S + k)
+            ans = max(ans, d);
     }
-    int need = 0;
-    // cout << sz << "\n";
-    if(sz != 0)
-        need = mxsz - sz;
-    // cout << need << "\n";
-    // cout << ans << "\n";
-    k -= need;
-    if(k >= 0)
-    {
-        if(need != 0)
-            ans++;
-        ans = min(n, ans + k/mxsz);
-    }
-    else
-        ans--;
-    cout << max(ans, 1LL) << "\n";
+    cout << ans << "\n";
 }
+
 void solve()
 {
-    
+
 }
+
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    if (fopen("input.txt","r")) 
+    if (fopen("input.txt","r"))
     {
         freopen("input.txt","r",stdin);
         freopen("output.txt","w",stdout);
@@ -144,6 +130,6 @@ siesta()
     int t;
     cin >> t;
     while(t--)
-    read();
+        read();
     solve();
-} 
+}

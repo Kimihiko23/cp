@@ -114,10 +114,17 @@ void solve()
     }
     for(int i = 1; i <= sum; i++)
     {
-        ans = (ans + (i + 1) / 2) % MOD;
+        ans = (ans + (i + 1) / 2 * dp[i]) % MOD;
         // cout << dp[i] << "\n";
     }
-    // cout << ans << "\n";
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j = 0; j <= a[i] - 2; j++)
+        {
+            ans = (ans + dp[j] * ((a[i] - j) / 2)) % MOD;
+        }
+    }
+    cout << ans << "\n";
 
 }
 siesta()

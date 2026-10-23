@@ -87,12 +87,18 @@ int flor(int a, int b)
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int p[N];
 int w[N];
-int par[21][N];
-int n, q, k;
-vector<pair<int, int>> g[N];
+int par[21][N], in[N], out[N];
+int n, q, k, timer = 0;
+int sum[N], sz[N];
+bool used[N];
+vector<pair<int, int>> g[N], gvt[N];
 int h[N], dis[N];
+vector<int> ver;
+int ans = 0;
+int sumw = 0;
 void dfs(int u, int old)
 {
+    in[u] = timer++;
     for(auto i : g[u])
     {
         int v = i.fi;
@@ -104,6 +110,7 @@ void dfs(int u, int old)
         par[0][v] = u;
         dfs(v, u);
     }
+    out[u] = timer;
 }
 void init()
 {
@@ -113,6 +120,89 @@ void init()
         {
             par[i][j] = par[i - 1][par[i - 1][j]];
         }
+    }
+}
+int lca(int u, int v)
+{
+    if(h[v] > h[u])
+        swap(u, v);
+    for(int i = 20; i >= 0; i--)
+    {
+        if(h[par[i][u]] >= h[v])
+            u = par[i][u];
+    }
+    if(u == v)
+        return u;
+    for(int i = 20; i >= 0; i--)
+    {
+        if(par[i][u] != par[i][v])
+        {
+            u = par[i][u];
+            v = par[i][v];
+        }
+    }
+    return par[0][u];
+}
+bool cmp(int a, int b)
+{
+    return in[a] < in[b];
+}
+bool isans(int u, int v)
+{
+    return in[u] <= in[v] && out[v] <= out[u];
+}
+int caldis(int u, int v)
+{
+    return (dis[v] - dis[u]) % MOD;
+}
+int buildvt()
+{
+    sort(ver.begin(), ver.end(), cmp);
+    int nn = ver.size();
+    for(int i = 0; i < nn - 1; i++)
+    {
+        int u = ver[i];
+        int v = ver[i + 1];
+        int w = lca(u, v);
+        ver.pb(w);
+    }
+    sort(ver.begin(), ver.end(), cmp);
+    ver.erase(unique(ver.begin(), ver.end()), ver.end());
+    vector<int> v;
+    for(auto i : ver)
+    {
+        while(v.size() >= 2 && isans(v.back(), i) == false)
+        {
+            int x = v[v.size() - 2];
+            int y = v.back();
+            gvt[x].pb({y, caldis(x, y)});
+            v.pop_back();
+        }
+        v.pb(i);
+    }
+    while(v.size() >= 2)
+    {
+        int x = v[v.size() - 2];
+        int y = v.back();
+        gvt[x].pb({y, caldis(x, y)});
+        v.pop_back();
+    }
+    return v[0];
+}
+void dfs2(int u)
+{
+    if(used[u])
+        sum[u] = u;
+    for(auto i : gvt[u])
+    {
+        int v = i.fi;
+        int ww = i.se;
+        dfs2(v);
+        sum[u] += sum[v];
+        // if(used[v])
+        //     sum[u] += v;
+        // sz[u] += sz[v];
+        ans = (ans + sum[v] % MOD * (((sumw - sum[v]) % MOD) + MOD) % MOD * ww) % MOD;
     }
 }
 void read()
@@ -134,6 +224,36 @@ void solve()
     par[0][1] = 1;
     dfs(1, 0);
     init();
+    while(q--)
+    {
+        ans = 0;
+        cin >> k;
+        int x;
+        ver.clear();
+        for(int i = 1; i <= k; i++)
+        {
+            cin >> x;
+            ver.pb(x);
+            // sz[x] = 1;
+            sumw += x;
+            used[x] = true;
+        }
+        int root = buildvt();
+        dfs2(root);
+        cout << (ans % MOD + MOD) % MOD << "\n";
+        for(auto u : ver)
+        {
+            gvt[u].clear();
+            used[u] = false;
+            sum[u] = 0;
+            // sz[u] = 0;
+            sumw = 0;
+        }
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        g[i].clear();
+    }
 }
 siesta()
 {
@@ -147,7 +267,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

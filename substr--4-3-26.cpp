@@ -3,7 +3,7 @@ using namespace std;
 
 #define int long long
 
-const int N = 1e6 + 5;
+const int N = 7e6 + 5;
 int mod = 2e9 + 11;
 int base = 256;
 string a , b;
@@ -53,7 +53,7 @@ main()
     for(int i = 1 ; i <= max(n , m) ; i++)
     {        
         p[i] = mul(p[i - 1] , base);
-        cout << p[i] << " ";
+        // cout << p[i] << " ";
     }
 
     for(int i = 1 ; i <= n ; i++)
@@ -67,13 +67,17 @@ main()
 
     for(int i = 1 ; i <= m ; i++)
         H = add(mul(H , base) , b[i]);
-
+    int ans = 0;
     for(int i = 1 ; i + m - 1 <= n ; i++)
     {
         /// a[i...i+m-1] = b[1...m]
         if(f(i , i + m - 1) == H)
-            cout << i << " ";
+        {
+            ans++;
+            // cout << i << " ";
+        }
     }
+    cout << ans;
 
 
 

@@ -90,17 +90,38 @@ int n, q, k;
 int p[N], w[N];
 vector<pair<int, int>> g[N], gvt[N];
 vector<int> v;
+int pardsu[N], sz[N];
+int timer = 0;
+int in[N], out[N];
+vector<pair<int, pair<int, int>>> edge;
+int findpar(int u)
+{
+    if(pardsu[u] == u) return u;
+    return pardsu[u] = findpar(pardsu[u]);
+}
+void join(int u, int v)
+{
+    u = findpar(u);
+    v = findpar(v);
+    if(u == v) return;
+    if(sz[u] < sz[v]) swap(u, v);
+    pardsu[v] = u;
+    sz[u] += sz[v];
+}
 void dfs(int u, int old)
 {
+    in[u] = timer++;
     for(auto i : g[u])
     {
         int v = i.fi;
         int ww = i.se;
+        if(v == old) continue;
         par[0][v] = u;
-        h[u] = h[v] + 1;
+        h[v] = h[u] + 1;
         mx[0][v] = ww;
         dfs(v, u);
     }
+    out[u] = timer;
 }
 void init()
 {
@@ -161,10 +182,54 @@ int mxw(int u, int v)
     res = max(res, mx[0][v]);
     return res;
 }
+bool cmp(int a, int b)
+{
+    return in[a] < in[b];
+}
+bool isanc(int u, int v)
+{
+    return in[u] <= in[v] && out[u] >= out[v];
+}
+int buildvt()
+{
+    sort(v.begin(), v.end(), cmp);
+    int nn = v.size();
+    for(int i = 0; i < nn - 1; i++)
+    {
+        int u = v[i];
+        int vv = v[i + 1];
+        int l = lca(u, vv);
+        v.pb(l);
+    }
+    sort(v.begin(), v.end(), cmp);
+    v.erase(unique(v.begin(), v.end()), v.end());
+    vector<int> tam;
+    for(auto i : v)
+    {
+        while(tam.size() >= 2 && !isanc(tam.back(), i))
+        {
+            int ww = mxw(tam[tam.size() - 2], tam.back());
+            edge.pb({ww, {tam[tam.size() - 2], tam.back()}});
+            // gvt[tam[tam.size() - 2]].pb({tam.back(), ww});
+            // gvt[tam.back()].pb({tam[tam.size() - 2], ww});
+            tam.pop_back();
+        }
+        tam.pb(i);
+    }
+    while(tam.size() >= 2)
+    {
+        int ww = mxw(tam[tam.size() - 2], tam.back());
+        edge.pb({ww, {tam[tam.size() - 2], tam.back()}});
+        // gvt[tam[tam.size() - 2]].pb({tam.back(), ww});
+        // gvt[tam.back()].pb({tam[tam.size() - 2], ww});
+        tam.pop_back();
+    }
+    return tam[0];
+}
 void read()
 {
     cin >> n >> q;
-    int x;
+    // int x;
     for(int i = 2; i <= n; i++)
     {
         cin >> p[i];
@@ -189,6 +254,44 @@ void solve()
         {
             cin >> x;
             v.pb(x);
+            sz[x] = 1;
+            pardsu[x] = x;
+        }
+        buildvt();
+        for(auto i : v)
+        {
+            if(pardsu[i] == 0) pardsu[i] = i;
+        }
+        sort(edge.begin(), edge.end());
+        int ans = 0;
+        for(auto i : edge)
+        {
+            int u = i.se.fi;
+            int v = i.se.se;
+            int ww = i.fi;
+            ans += ww * sz[findpar(u)] * sz[findpar(v)];
+            join(u, v);
+        }
+        cout << ans << "\n";
+        edge.clear();
+        for(auto i : v)
+        {
+            gvt[i].clear();
+            sz[i] = 0;
+            pardsu[i] = 0;
+        }
+        v.clear();
+    }
+    timer = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        g[i].clear();
+        in[i] = 0;
+        out[i] = 0;
+        for(int j = 0; j <= 20; j++)
+        {
+            par[j][i] = 0;
+            mx[j][i] = 0;
         }
     }
 }
@@ -204,7 +307,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

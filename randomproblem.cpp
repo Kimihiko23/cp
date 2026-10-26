@@ -68,7 +68,7 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "input"
+#define name "WATCHTOWER"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
 const int N = 1e5 + 23;
@@ -85,47 +85,123 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-int n, k;
+
+int n, q;
 int a[N];
-int ans = 1e18;
-void sinh(string s)
+vector<int> adj[N];
+int tin[N], tout[N], par[N], timer_ = 0;
+
+struct Node
 {
-    if(s.size() == n)
+    int mx, cnt;
+};
+Node st[4 * N];
+
+Node merge(const Node &L, const Node &R)
+{
+    if (L.mx > R.mx) return L;
+    if (L.mx < R.mx) return R;
+    return {L.mx, L.cnt + R.cnt};
+}
+
+int val[N];
+
+void build(int id, int l, int r)
+{
+    if (l == r)
     {
-        int cur = 0, sum = 0, vis = 0;
-        for(int i = 0; i < n; i++)
-        {
-            if(s[i] == '1')
-            {
-                int target = max(a[i + 1], cur + 1);
-                sum += target - a[i + 1];
-                cur = target;
-                vis++;
-            }
-            else if(a[i + 1] > cur)
-            {
-                cur = a[i + 1];
-                vis++;
-            }
-        }
-        if(vis >= k) ans = min(ans, sum);
+        st[id] = {val[l], 1};
         return;
     }
-    sinh(s + "0");
-    sinh(s + "1");
+    int mid = (l + r) / 2;
+    build(id * 2, l, mid);
+    build(id * 2 + 1, mid + 1, r);
+    st[id] = merge(st[id * 2], st[id * 2 + 1]);
 }
+
+void update(int id, int l, int r, int pos, int x)
+{
+    if (l == r)
+    {
+        st[id] = {x, 1};
+        return;
+    }
+    int mid = (l + r) / 2;
+    if (pos <= mid) update(id * 2, l, mid, pos, x);
+    else update(id * 2 + 1, mid + 1, r, pos, x);
+    st[id] = merge(st[id * 2], st[id * 2 + 1]);
+}
+
+Node query(int id, int l, int r, int u, int v)
+{
+    if (v < l || r < u) return {NINF, 0};
+    if (u <= l && r <= v) return st[id];
+    int mid = (l + r) / 2;
+    return merge(query(id * 2, l, mid, u, v),
+                 query(id * 2 + 1, mid + 1, r, u, v));
+}
+
+void dfs()
+{
+    vector<int> stk, it(n + 1, 0);
+    stk.pb(1);
+    par[1] = 0;
+    tin[1] = ++timer_;
+    while (!stk.empty())
+    {
+        int u = stk.back();
+        if (it[u] < (int)adj[u].size())
+        {
+            int v = adj[u][it[u]++];
+            if (v == par[u]) continue;
+            par[v] = u;
+            tin[v] = ++timer_;
+            stk.pb(v);
+        }
+        else
+        {
+            tout[u] = timer_;
+            stk.pop_back();
+        }
+    }
+}
+
 void read()
 {
-    cin >> n >> k;
-    for(int i = 1; i <= n; i++)
+    cin >> n >> q;
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    for (int i = 1; i < n; i++)
     {
-        cin >> a[i];
+        int u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
 }
 void solve()
 {
-    sinh("");
-    cout << ans << "\n";
+    dfs();
+    for (int i = 1; i <= n; i++) val[tin[i]] = a[i];
+    build(1, 1, n);
+    while (q--)
+    {
+        int type;
+        cin >> type;
+        if (type == 1)
+        {
+            int u, x;
+            cin >> u >> x;
+            a[u] = x;
+            update(1, 1, n, tin[u], x);
+        }
+        else
+        {
+            int u;
+            cin >> u;
+            Node res = query(1, 1, n, tin[u], tout[u]);
+            cout << res.mx << " " << res.cnt << "\n";
+        }
+    }
 }
 siesta()
 {
@@ -142,4 +218,4 @@ siesta()
     
     read();
     solve();
-} 
+}

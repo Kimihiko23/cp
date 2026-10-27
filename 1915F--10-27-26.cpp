@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 1e6 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,23 +85,72 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-int n, m, q;
-int ndfs[N], low[N];
-vector<int> g[N];
+int n;
+vector<pair<int, int>> event;
+bool cmp(pair<int, int> a, pair<int, int> b)
+{
+    if(a.se == b.se) return a.fi < b.fi;
+    else
+    return a.se < b.se;
+}
+int bit[N];
+vector<int> nen;
+void add(int val, int id)
+{
+    while(id <= n)
+    {
+        bit[id] += val;
+        id += id & (-id);
+    }
+}
+int sum(int id)
+{
+    int res = 0;
+    while(id > 0)
+    {
+        res += bit[id];
+        id -= id & (-id);
+    }
+    return res;
+}
+int sumr(int l, int r)
+{
+    return sum(r) - sum(l - 1);
+}
 void read()
 {
-    cin >> n >> m >> q;
-    int u, v;
-    for(int i = 1; i <= m; i++)
+    int st, ed;
+    cin >> n;
+    for(int i = 1; i <= n; i++)
     {
-        cin >> u >> v;
-        g[u].pb(v);
-        g[v].pb(u);
+        cin >> st >> ed;
+        event.pb({st, ed});
+        nen.pb(st);
+        nen.pb(ed);
     }
 }
 void solve()
 {
-    
+    int ans = 0;
+    sort(event.begin(), event.end(), cmp);
+    sort(nen.begin(), nen.end());
+    nen.resize(unique(nen.begin(), nen.end()) - nen.begin());
+    n = nen.size();
+    for(auto &i : event)
+    {
+        i.fi = lower_bound(nen.begin(), nen.end(), i.fi) - nen.begin() + 1;
+        i.se = lower_bound(nen.begin(), nen.end(), i.se) - nen.begin() + 1;
+    }
+    for(auto i : event)
+    {
+        int l = i.fi, r = i.se;
+        ans += sumr(l, r);
+        add(1, l);
+    }
+    nen.clear();
+    event.clear();
+    for(int i = 0; i <= n; i++) bit[i] = 0;
+    cout << ans << "\n";
 }
 siesta()
 {
@@ -115,7 +164,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

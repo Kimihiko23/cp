@@ -206,6 +206,8 @@ int buildvt()
     vector<int> tam;
     for(auto i : v)
     {
+        //bug right here used to !isanc(tam[tam.size() - 2], i)
+        //tam.back is right
         while(tam.size() >= 2 && !isanc(tam.back(), i))
         {
             int ww = mxw(tam[tam.size() - 2], tam.back());
@@ -258,6 +260,7 @@ void solve()
             pardsu[x] = x;
         }
         buildvt();
+        //need to put par for the non query vertex bc u also join them so yeah
         for(auto i : v)
         {
             if(pardsu[i] == 0) pardsu[i] = i;
@@ -269,6 +272,7 @@ void solve()
             int u = i.se.fi;
             int v = i.se.se;
             int ww = i.fi;
+            //no mod bc i didnt read the problem statment
             ans += ww * sz[findpar(u)] * sz[findpar(v)];
             join(u, v);
         }

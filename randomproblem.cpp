@@ -48,7 +48,7 @@ tantei wa mou shindeiru
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#%%###%%%%##%%         +*+       :--:    =%@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%%%@@@@%-           +.  .  .:---::..==-:=*%%%@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%%@@%.             :    :.:-----+*+=::------=+*%@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#.    ....              ....:.:.:.:-========-----#%%@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%#.     ....              ....:.:.:.:-========-----#%%@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%*--:::-+-.......... ........:...:::::...:..-=============*#%%@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@%%*+--------....::.............. ....:::::::.:::..-=========--====--=%%@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@%%%=-------------::::............:.::....:...:::.:-:..-======+====****=-----%%@@@@@@@@@
@@ -58,7 +58,7 @@ tantei wa mou shindeiru
 @@@@@@@@@@@@@@@@@@@@@@@@%----------------=====:.........  .       .... ........===++++*******############*=*%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@*---------------=====+=........ ...       ...::. .....=++++**+=******#############+:%@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@%--------------======+=. .... ..::..        .:::::.   =+******+++**#***######*#####*=#@@@@@@
-                                                                               
+                                                                                
 */
 #include <bits/stdc++.h>
 #define int long long
@@ -68,10 +68,10 @@ tantei wa mou shindeiru
 #define se second
 #define siesta main
 using namespace std;
-#define name "WATCHTOWER"
+#define name "DATPHONG"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 2e5 + 23;
+const int N = 5e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,273 +85,70 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
-<<<<<<< HEAD
-int n, m, q;
-int ndfs[N], low[N];
-vector<int> g[N], g2[N];
-bool dd[N];
-int forest[N];
-int cnt = 0;
-int dis[N];
-vector<pair<int, int>> edg;
-stack<int> st;
-int tt = 0;
-int nen[N], par[20][N];
-int tplt = 0;
-void dfs(int u, int p)
-{
-    forest[u] = cnt;
-    ndfs[u] = low[u] = tt++;
-    st.push(u);
-    for(auto v : g[u])
-    {
-        if(v == p)
-            continue;
-        if(ndfs[v] == INF)
-        {
-            dfs(v, u);
-            low[u] = min(low[u], low[v]);
-        }
-        else
-            low[u] = min(low[u], ndfs[v]);
-    }
-    if(low[u] == ndfs[u])
-    {
-        tplt++;
-        while(1)
-        {
-            int tam = st.top();
-            nen[tam] = tplt;
-            st.pop();
-            if(tam == u)
-                break;
-        }
-    }
-}
-void dfs2(int u, int p)
-{
-    dd[u] = 1;
-    for(auto v : g2[u])
-    {
-        if(v == p)
-            continue;
-        par[0][v] = u;
-        dis[v] = dis[u] + 1;
-        dfs2(v, u);
-    }
-}
-void init()
-{
-    for(int i = 1; i < 20; i++)
-        for(int j = 1; j <= tplt; j++)
-            par[i][j] = par[i - 1][par[i - 1][j]];
-}
-int lca(int u, int v)
-{
-    if(dis[u] < dis[v])
-        swap(u, v);
-    for(int i = 19; i >= 0; i--)
-        if(dis[par[i][u]] >= dis[v])
-            u = par[i][u];
-    if(u == v)
-        return u;
-    for(int i = 19; i >= 0; i--)
-        if(par[i][u] != par[i][v])
-            u = par[i][u], v = par[i][v];
-    return par[0][u];
-}
-int disance(int u, int v)
-{
-    return dis[u] + dis[v] - 2 * dis[lca(u, v)];
-=======
 
-int n, q;
-int a[N];
-vector<int> adj[N];
-int tin[N], tout[N], par[N], timer_ = 0;
+int n, m, o;
+pair<int, int> a[N], b[N];
+int par[N];
 
-struct Node
+int find_set(int v)
 {
-    int mx, cnt;
-};
-Node st[4 * N];
-
-Node merge(const Node &L, const Node &R)
-{
-    if (L.mx > R.mx) return L;
-    if (L.mx < R.mx) return R;
-    return {L.mx, L.cnt + R.cnt};
-}
-
-int val[N];
-
-void build(int id, int l, int r)
-{
-    if (l == r)
-    {
-        st[id] = {val[l], 1};
-        return;
-    }
-    int mid = (l + r) / 2;
-    build(id * 2, l, mid);
-    build(id * 2 + 1, mid + 1, r);
-    st[id] = merge(st[id * 2], st[id * 2 + 1]);
->>>>>>> 86223278d0191bb5851e559a67101081b4902159
-}
-
-void update(int id, int l, int r, int pos, int x)
-{
-    if (l == r)
-    {
-        st[id] = {x, 1};
-        return;
-    }
-    int mid = (l + r) / 2;
-    if (pos <= mid) update(id * 2, l, mid, pos, x);
-    else update(id * 2 + 1, mid + 1, r, pos, x);
-    st[id] = merge(st[id * 2], st[id * 2 + 1]);
-}
-
-Node query(int id, int l, int r, int u, int v)
-{
-    if (v < l || r < u) return {NINF, 0};
-    if (u <= l && r <= v) return st[id];
-    int mid = (l + r) / 2;
-    return merge(query(id * 2, l, mid, u, v),
-                 query(id * 2 + 1, mid + 1, r, u, v));
-}
-
-void dfs()
-{
-    vector<int> stk, it(n + 1, 0);
-    stk.pb(1);
-    par[1] = 0;
-    tin[1] = ++timer_;
-    while (!stk.empty())
-    {
-        int u = stk.back();
-        if (it[u] < (int)adj[u].size())
-        {
-            int v = adj[u][it[u]++];
-            if (v == par[u]) continue;
-            par[v] = u;
-            tin[v] = ++timer_;
-            stk.pb(v);
-        }
-        else
-        {
-            tout[u] = timer_;
-            stk.pop_back();
-        }
-    }
+    return v == par[v] ? v : par[v] = find_set(par[v]);
 }
 
 void read()
 {
-<<<<<<< HEAD
-    cin >> n >> m >> q;
-    int u, v;
-    for(int i = 1; i <= m; i++)
+    cin >> n >> m >> o;
+    for (int i = 1; i <= n; i++)
     {
-        cin >> u >> v;
-        g[u].pb(v);
-        g[v].pb(u);
-        edg.pb({u, v});
-=======
-    cin >> n >> q;
-    for (int i = 1; i <= n; i++) cin >> a[i];
-    for (int i = 1; i < n; i++)
+     
+        cin >> a[i].se >> a[i].fi;
+    }
+    for (int i = 1; i <= m; i++)
     {
-        int u, v;
-        cin >> u >> v;
-        adj[u].pb(v);
-        adj[v].pb(u);
->>>>>>> 86223278d0191bb5851e559a67101081b4902159
+        
+        cin >> b[i].fi >> b[i].se;
     }
 }
+
 void solve()
 {
-<<<<<<< HEAD
-    for(int i = 1; i <= n; i++)
-        ndfs[i] = INF;
-    for(int i = 1; i <= n; i++)
+    sort(a + 1, a + n + 1);
+    sort(b + 1, b + m + 1, greater<pair<int, int>>());
+
+    for (int i = 1; i <= n + 1; i++)
     {
-        cnt++;
-        if(ndfs[i] == INF)
-            dfs(i, 0);
-    }
-    
-    for(auto i : edg)
-    {
-        int u = i.fi, v = i.se;
-        if(nen[u] != nen[v])
-        {
-            g2[nen[u]].pb(nen[v]);
-            g2[nen[v]].pb(nen[u]);
-        }
-    }
-    for(int i = 1; i <= tplt; i++)
-    {
-        sort(g2[i].begin(), g2[i].end());
-        g2[i].erase(unique(g2[i].begin(), g2[i].end()), g2[i].end());
-    }
-    for(int i = 1; i <= tplt; i++)
-        if(!dd[i])
-            dfs2(i, 0);
-    init();
-    // dfs2(1, 0);
-    int u, v;
-    while(q--)
-    {
-        cin >> u >> v;
-        if(forest[u] != forest[v])
-        {
-            cout << -1 << '\n';
-            continue;
-        }
-        u = nen[u];
-        v = nen[v];
-        cout << disance(u, v) << '\n';
+        par[i] = i;
     }
 
-    
-=======
-    dfs();
-    for (int i = 1; i <= n; i++) val[tin[i]] = a[i];
-    build(1, 1, n);
-    while (q--)
+    vector<int> profits;
+    for (int i = 1; i <= m; i++)
     {
-        int type;
-        cin >> type;
-        if (type == 1)
+        int pos = lower_bound(a + 1, a + n + 1, make_pair(b[i].se, 0LL)) - a;
+        pos = find_set(pos);
+        if (pos <= n && b[i].fi > a[pos].se)
         {
-            int u, x;
-            cin >> u >> x;
-            a[u] = x;
-            update(1, 1, n, tin[u], x);
-        }
-        else
-        {
-            int u;
-            cin >> u;
-            Node res = query(1, 1, n, tin[u], tout[u]);
-            cout << res.mx << " " << res.cnt << "\n";
+            profits.pb(b[i].fi - a[pos].se);
+            par[pos] = find_set(pos + 1);
         }
     }
->>>>>>> 86223278d0191bb5851e559a67101081b4902159
+
+    sort(profits.begin(), profits.end(), greater<int>());
+
+    int ans = 0;
+    int limit = min((int)profits.size(), o);
+    for (int i = 0; i < limit; i++)
+    {
+        ans += profits[i];
+    }
+    cout << ans << "\n";
 }
+
 siesta()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    if (fopen("input.txt","r")) 
-    {
-        freopen("input.txt","r",stdin);
-        freopen("output.txt","w",stdout);
-    }
-    // freopen(name ".inp", "r", stdin);
-    // freopen(name ".out", "w", stdout);
+
     
     read();
     solve();

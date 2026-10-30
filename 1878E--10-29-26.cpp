@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,13 +85,59 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int st[N * 4];
+int n;
+int a[N];
+void build(int id, int l, int r)
+{
+    if(l == r)
+    {
+        st[id] = a[l];
+        return;
+    }
+    int mid = (l + r) / 2;
+    build(id * 2, l, mid);
+    build(id * 2 + 1, mid + 1, r);
+    st[id] = st[id * 2] & st[id * 2 + 1];
+}
+int get(int id, int l, int r, int u, int v)
+{
+    if(l > v || r < u) return ~0LL;
+    if(l >= u && r <= v) return st[id];
+    int mid = (l + r) / 2;
+    return get(id * 2, l, mid, u, v) & get(id * 2 + 1, mid + 1, r, u, v);
+}
 void read()
 {
-    
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
 }
 void solve()
 {
-    
+    build(1, 1, n);
+    int q, l, k;
+    cin >> q;
+    while(q--)
+    {
+        cin >> l >> k;
+        int L = l, R = n, ans = -1;
+        while(L <= R)
+        {
+            int mid = (L + R) / 2;
+            if(get(1, 1, n, l, mid) >= k)
+            {
+                ans = mid;
+                L = mid + 1;
+            }
+            else R = mid - 1;
+        }
+        if(a[l] < k) cout << -1 << " ";
+        else cout << ans << " ";
+    }
+    cout << "\n";
 }
 siesta()
 {
@@ -105,7 +151,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

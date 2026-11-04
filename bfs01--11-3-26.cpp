@@ -103,21 +103,11 @@ void bfs()
         {
             int v = i.fi;
             int ww = i.se;
-            if(ww == 0)
+            if (dis[u] + ww < dis[v]) 
             {
-                if(dis[v] == INF)
-                {
-                    dis[v] = dis[u];
-                    q.push_front({v, w});
-                }
-            }
-            else
-            {
-                if(dis[v] == INF)
-                {
-                    dis[v] = dis[u] + 1;
-                    q.push_back({v, w + 1});
-                }
+                dis[v] = dis[u] + ww;
+                if (ww == 0) q.push_front({v, dis[v]});
+                else q.push_back({v, dis[v]});
             }
         }
     }

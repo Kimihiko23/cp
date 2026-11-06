@@ -88,7 +88,7 @@ vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int n, m;
 vector<int> ans;
 vector<int> g[N];
-bool dd[N];`
+bool dd[N];
 void read()
 {
     cin >> n >> m;
@@ -96,13 +96,43 @@ void read()
     for (int i = 1; i <= m; i++)
     {
         cin >> u >> v;
-        if(u > v) swap(u, v);
+        // if(u > v) swap(u, v);
+        if(u == v)
+            continue;
         g[u].pb(v);
+        g[v].pb(u);
     }
 }
 void solve()
 {
-    
+    set<int> s;
+    vector<int> res;
+    res.pb(1);
+    dd[1] = 1;
+    for(auto i : g[1]) 
+    if(!dd[i])
+    s.insert(i);
+    int rm = n - 1;
+    while(s.size())
+    {
+        int current = *s.begin();
+        s.erase(s.begin());
+        res.pb(current);
+        rm--;
+        dd[current] = 1;
+        if(rm == 0)
+        {
+            continue;
+        }
+        for(auto i : g[current])
+        {
+            if(!dd[i])
+            {
+                s.insert(i);
+            }
+        }
+    }
+    for(auto i : res) cout << i << " ";
 }
 siesta()
 {

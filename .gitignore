@@ -12,3 +12,6 @@ obj/
 # Loại bỏ các file tạm khác
 *.swp
 *.DS_Store
+# Loại bỏ các file I/O test
+input.txt
+output.txt

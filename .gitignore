@@ -4,7 +4,13 @@
 *.out
 
 # Loại bỏ các thư mục rác của IDE (VS Code, Visual Studio)
-.vscode/
+# Giữ lại các cấu hình JSON chính của VS Code, chỉ bỏ file cache/tạm
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
+!.vscode/settings.json
+!.vscode/keybindings.json
 .vs/
 bin/
 obj/

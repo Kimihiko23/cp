@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 3e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,13 +85,60 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int n;
+int a[N];
+vector<int> pos[N];
+int ans[N];
+vector<int> add[N], del[N];
 void read()
 {
-    
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+        pos[a[i]].pb(i);
+        ans[i] = INF;
+    }
 }
 void solve()
 {
-    
+    for(int i = 1; i <= n; i++)
+    {
+        if(pos[i].empty())
+            continue;
+        sort(pos[i].begin(), pos[i].end());
+        int big = pos[i][0];
+        for(int j = 1; j < pos[i].size(); j++)
+        {
+            big = max(big, pos[i][j] - pos[i][j - 1]);
+        }
+        big = max(big, (n + 1) - pos[i].back());
+        add[big].pb(i);
+        del[n + 1].pb(i);
+    }
+    set<int> s;
+    for(int i = 1; i <= n; i++)
+    {
+        for(int j : add[i])
+            s.insert(j);
+        for(int j : del[i])
+            s.erase(j);
+        if(!s.empty())
+            ans[i] = *s.begin();
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        if(ans[i] == INF)
+            cout << -1 << " ";
+        else
+            cout << ans[i] << " ";
+        add[i].clear();
+        del[i].clear();
+        pos[i].clear();
+    }
+    del[n + 1].clear();
+    cout << "\n";
+
 }
 siesta()
 {
@@ -105,7 +152,11 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
-    read();
-    solve();
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        read();
+        solve();
+    }
 } 

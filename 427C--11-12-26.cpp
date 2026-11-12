@@ -88,10 +88,57 @@ vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int n, m;
 int a[N];
 vector<int> g[N];
+vectoc<int> mem[N];
 int ndfs[N], low[N];
+int nen[N];
+int timer = 0;
+stack<int> st;
+int scc = 0;
+void dfs(int u, int p)
+{
+    st.push(u);
+    ndfs[u] = low[u] = ++timer;
+    for(int v : g[u])
+    {
+        if(v == p) continue;
+        if(ndfs[v])
+        {
+            low[u] = min(low[u], ndfs[v]);
+        }
+        else
+        {
+            dfs(v, u);
+            low[u] = min(low[u], low[v]);
+        }
+    }
+    if(ndfs[u] == low[u])
+    {
+        scc++;
+        while(st.top() != u)
+        {
+            int v = st.top();
+            st.pop();
+            nen[v] = scc;
+        }
+        int v = st.top();
+        st.pop();
+        nen[v] = scc;
+    }
+}
 void read()
 {
-    
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    int u, v;
+    for(int i = 1; i <= m; i++)
+    {
+        cin >> u >> v;
+        g[u].pb(v);
+        g[v].pb(u);
+    }
 }
 void solve()
 {

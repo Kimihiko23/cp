@@ -87,27 +87,33 @@ int flor(int a, int b)
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int n, m;
 int a[N];
-vector<int> g[N];
-vectoc<int> mem[N];
+vector<pair<int, int>> g[N];
+vector<int> mem[N];
 int ndfs[N], low[N];
 int nen[N];
 int timer = 0;
 stack<int> st;
 int scc = 0;
+int out[N];
 void dfs(int u, int p)
 {
     st.push(u);
     ndfs[u] = low[u] = ++timer;
-    for(int v : g[u])
+    for(auto edge : g[u])
     {
-        if(v == p) continue;
+        int v = edge.fi;
+        int id = edge.se;
+        if(id == p || out[v])
+        {
+            continue;
+        }
         if(ndfs[v])
         {
             low[u] = min(low[u], ndfs[v]);
         }
         else
         {
-            dfs(v, u);
+            dfs(v, id);
             low[u] = min(low[u], low[v]);
         }
     }
@@ -119,30 +125,66 @@ void dfs(int u, int p)
             int v = st.top();
             st.pop();
             nen[v] = scc;
+            mem[scc].pb(v);
+            out[v] = 1;
         }
         int v = st.top();
         st.pop();
         nen[v] = scc;
+        mem[scc].pb(v);
+        out[v] = 1;
     }
 }
 void read()
 {
-    cin >> n >> m;
+    cin >> n;
     for(int i = 1; i <= n; i++)
     {
         cin >> a[i];
     }
+    cin >> m;
     int u, v;
     for(int i = 1; i <= m; i++)
     {
         cin >> u >> v;
-        g[u].pb(v);
-        g[v].pb(u);
+        g[u].pb({v, i});
     }
 }
 void solve()
 {
-    
+    for(int i = 1; i <= n; i++)
+    {
+        if(ndfs[i] == 0)
+        {
+            // cout << "gei\n";
+            dfs(i, 0);
+        }
+    }
+    // cout << ndfs[2] << " " << low[2] << "\n";
+    int ans = 0;
+    int ways = 1;
+    for(int i = 1; i <= scc; i++)
+    {
+        int mn = INF;
+        int cnt = 0;
+        for(int v : mem[i])
+        {
+            // cout << v << " ";
+            if(a[v] < mn)
+            {
+                mn = a[v];
+                cnt = 1;
+            }
+            else if(a[v] == mn)
+            {
+                cnt++;
+            }
+        }
+        // cout << "\n";
+        ans += mn;
+        ways = (ways * cnt) % MOD;
+    }
+    cout << ans << " " << ways;
 }
 siesta()
 {

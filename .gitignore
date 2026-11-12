@@ -1,18 +1,25 @@
-# Loại bỏ các file thực thi
+# 1. Bỏ qua mặc định mọi file thực thi không có đuôi mở rộng (Linux)
+*
+
+# 2. Chỉ giữ lại các file có phần mở rộng (như .cpp, .h, .md...) và thư mục
+!*.*
+!*/
+!Makefile
+!.gitignore
+
+# 3. Chặn các file cụ thể có đuôi mở rộng (đặt SAU quy tắc !*.* để ghi đè)
 *.exe
 *.o
 *.out
+*.swp
+*.DS_Store
 
-# Loại bỏ các thư mục rác của IDE (VS Code, Visual Studio)
-# Giữ lại các cấu hình JSON chính của VS Code, chỉ bỏ file cache/tạm
-.vscode/*
+# Bỏ qua toàn bộ thư mục cấu hình và cache của IDE
+.vscode/
 .vs/
 bin/
 obj/
 
-# Loại bỏ các file tạm khác
-*.swp
-*.DS_Store
-# Loại bỏ các file I/O test
+# Bỏ qua các file I/O test
 input.txt
 output.txt

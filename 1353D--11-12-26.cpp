@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -85,9 +85,54 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+struct node
+{
+    int st, len;
+    bool operator<(const node& other) const
+    {
+        if (len != other.len) return len > other.len;
+        return st < other.st;
+    }
+};
+int ans[N];
+set<node> s;
 void read()
 {
-    
+    int n;
+    s.clear();
+    cin >> n;
+    s.insert({1, n});
+    for (int i = 1; i <= n; i++)
+    {
+        auto it = s.begin();
+        int st = it->st, len = it->len;
+        if(len % 2)
+        {
+            int vt = st + len / 2;
+            ans[vt] = i;
+            s.erase(it);
+            if(len != 1)
+            {
+                s.insert({st, len / 2});
+                s.insert({vt + 1, len / 2});
+            }    
+        }
+        else
+        {
+            int vt = st + len / 2 - 1;
+            ans[vt] = i;
+            s.erase(it);
+            if(len != 1)
+            {
+                if(len != 2)
+                    s.insert({st, len / 2 - 1});
+                s.insert({vt + 1, len / 2});
+            }    
+        }
+    }
+    for(int i = 1; i <= n; i++)
+        cout << ans[i] << " ";
+    cout << "\n";
 }
 void solve()
 {
@@ -105,7 +150,9 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
+    int t;
+    cin >> t;
+    while(t--)
     read();
     solve();
 } 

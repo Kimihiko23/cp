@@ -85,13 +85,57 @@ int flor(int a, int b)
     return a / b - (a % b && (a ^ b) < 0);
 }
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
+int dp[N][2];
+int a[N];
+int n;
+string s[N], srev[N];
 void read()
 {
-    
+    cin >> n;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> s[i];
+        srev[i] = s[i];
+        reverse(srev[i].begin(), srev[i].end());
+    }
 }
 void solve()
 {
-    
+    dp[1][0] = 0;
+    dp[1][1] = a[1];
+    for(int i = 2; i <= n; i++)
+    {
+        dp[i][0] = dp[i][1] = INF;
+        if(s[i] >= s[i - 1])
+        {
+            dp[i][0] = min(dp[i][0], dp[i - 1][0]);
+        }
+        if(s[i] >= srev[i - 1])
+        {
+            dp[i][0] = min(dp[i][0], dp[i - 1][1]);
+        }
+        if(srev[i] >= s[i - 1])
+        {
+            dp[i][1] = min(dp[i][1], dp[i - 1][0] + a[i]);
+        }
+        if(srev[i] >= srev[i - 1])
+        {
+            dp[i][1] = min(dp[i][1], dp[i - 1][1] + a[i]);
+        }
+    }
+    int ans = min(dp[n][0], dp[n][1]);
+    if(ans == INF)
+    {
+        cout << -1;
+    }
+    else
+    {
+        cout << ans;
+    }
 }
 siesta()
 {

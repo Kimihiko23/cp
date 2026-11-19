@@ -71,7 +71,7 @@ using namespace std;
 #define name "input"
 const int MOD1 = 1000020409;
 const int MOD = 1e9 + 7;
-const int N = 1e5 + 23;
+const int N = 2e5 + 23;
 const int INF = 0x3f3f3f3f3f3f3f3f;
 const int NINF = -1e18;
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
@@ -99,13 +99,18 @@ void read()
     }
     if(b[n] != a[n])
     {
-        cout << "NO";
-        exit(0);
+        cout << "NO\n";
+        return;
     }
     for(int i = n - 1; i >= 1; i--)
     {
-        
+        if(a[i] != b[i] && (a[i] ^ a[i + 1]) != b[i] && (a[i] ^ b[i + 1]) != b[i])
+        {
+            cout << "NO\n";
+            return;
+        }
     }
+    cout << "YES\n";
 }
 void solve()
 {
@@ -123,7 +128,9 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
+    int t;
+    cin >> t;
+    while(t--)
     read();
     solve();
 } 

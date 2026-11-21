@@ -87,9 +87,51 @@ int flor(int a, int b)
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int n;
 string s;
+int pre[40], cnt1[40];
 void read()
 {
     cin >> n >> s;
+    if(n == 2)
+    {
+        cout << stoll(s) << "\n";
+        return;
+    }
+    if(n == 3)
+    {
+        int ans = 1e18;
+        for(int i = 1; i < n; i++)
+        {
+            int a = stoll(s.substr(0, i));
+            int b = stoll(s.substr(i, n - i));
+            ans = min(ans, a + b);
+            ans = min(ans, a * b);
+        }
+        cout << ans << "\n";
+        return;
+    }
+    if(s.find('0') != string::npos)
+    {
+        cout << 0 << "\n";
+        return;
+    }
+    s = " " + s;
+    memset(pre, 0, sizeof(pre));
+    memset(cnt1, 0, sizeof(cnt1));
+    for(int i = 1; i <= n; i++)
+    {
+        pre[i] = pre[i - 1] + (s[i] - '0');
+        cnt1[i] = cnt1[i - 1] + (s[i] == '1');
+    }
+    int ans = 1e18;
+    for(int i = 1; i < n; i++)
+    {
+        int sum = stoll(s.substr(i, 2));
+        int prev = pre[i - 1] - cnt1[i - 1];
+        int nxt = pre[n] - pre[i + 1] - cnt1[n] + cnt1[i + 1];
+        // cout << sum << " " << prev << " " << nxt << "\n";
+        ans = min(ans, sum + prev + nxt);
+    }
+    cout << ans << "\n";
     
 }
 void solve()
@@ -108,7 +150,9 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
+    int t;
+    cin >> t;
+    while(t--)
     read();
     solve();
 } 

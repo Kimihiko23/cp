@@ -93,26 +93,10 @@ void read()
     {
         cin >> a[i];
     }
-    for(int i = 1; i <= n / 2; i++)
+    for(int i = 2; i <= n / 2; i++)
     {
-        int w1 = 0;
-        if(i - 1 >= 1) if(a[i - 1] == a[i]) w1++;
-        if(i + 1 <= n) if(a[i + 1] == a[i]) w1++;
-        int w2 = 0;
-        int j = n - i + 1;
-        if(j - 1 >= 1) if(a[j - 1] == a[j]) w2++;
-        if(j + 1 <= n) if(a[j + 1] == a[j]) w2++;
-        swap(a[i], a[j]);
-        int nxw1 = 0;
-        if(i - 1 >= 1) if(a[i - 1] == a[i]) nxw1++;
-        if(i + 1 <= n) if(a[i + 1] == a[i]) nxw1++;
-        int nxw2 = 0;
-        if(j - 1 >= 1) if(a[j - 1] == a[j]) nxw2++;
-        if(j + 1 <= n) if(a[j + 1] == a[j]) nxw2++;
-        if(nxw1 + nxw2 >= w1 + w2) swap(a[i], a[j]);
-        for(int k = 1; k <= n; k++) cout << a[k] << " ";
-        cout << "\n";
-        cout << w1 << " " << w2 << " " << nxw1 << " " << nxw2 << "\n";
+        if(a[i] == a[i - 1] || a[n - i + 2] == a[n - i + 1])
+            swap(a[i], a[n - i + 1]);
     }
     int ans = 0;
     for(int i = 1; i < n; i++)

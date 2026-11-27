@@ -87,9 +87,36 @@ int flor(int a, int b)
 vector<int> dx{0, 0, 1, -1}, dy{-1, 1, 0, 0};
 int n, h;
 int a[N];
+bool check(int x)
+{
+    int sum = 0;
+    for(int i = 1; i < n; i++)
+    {
+        sum += min(a[i + 1] - a[i], x);
+    }
+    sum += x;
+    return sum >= h;
+}
 void read()
 {
-    
+    cin >> n >> h;
+    for(int i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+    }
+    int ans = 0;
+    int l = 1, r = h;
+    while(l <= r)
+    {
+        int mid = (l + r) / 2;
+        if(check(mid))
+        {
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+    cout << ans << "\n";
 }
 void solve()
 {
@@ -107,7 +134,9 @@ siesta()
     }
     // freopen(name ".inp", "r", stdin);
     // freopen(name ".out", "w", stdout);
-    
+    int t;
+    cin >> t;
+    while(t--)
     read();
     solve();
 } 
